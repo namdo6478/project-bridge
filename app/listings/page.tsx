@@ -24,14 +24,18 @@ export default async function ListingsPage({
   searchParams: Promise<{
     q?: string | string[];
     category?: string | string[];
+    subcategory?: string | string[];
     region?: string | string[];
+    condition?: string | string[];
   }>;
 }) {
   const params = await searchParams;
   const filters = {
     q: getFilterValue(params.q),
     category: getFilterValue(params.category),
+    subcategory: getFilterValue(params.subcategory),
     region: getFilterValue(params.region),
+    condition: getFilterValue(params.condition),
   };
 
   const filteredListings = filterListings(listings, filters);
@@ -42,7 +46,11 @@ export default async function ListingsPage({
         <h1 className="text-2xl font-bold text-text-primary">매물 목록</h1>
         <p className="mt-2 text-sm text-text-secondary">
           전국 축산기계 매물 {filteredListings.length}건
-          {filters.q || filters.category || filters.region
+          {filters.q ||
+          filters.category ||
+          filters.subcategory ||
+          filters.region ||
+          filters.condition
             ? " (필터 적용됨)"
             : ""}
         </p>
@@ -53,7 +61,9 @@ export default async function ListingsPage({
           <ListingFilters
             defaultQuery={filters.q}
             defaultCategory={filters.category}
+            defaultSubcategory={filters.subcategory}
             defaultRegion={filters.region || "전국"}
+            defaultCondition={filters.condition}
           />
         </aside>
 

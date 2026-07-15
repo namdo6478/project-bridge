@@ -1,16 +1,24 @@
 import Link from "next/link";
-import { LISTING_CATEGORIES, LISTING_REGIONS } from "@/lib/types/listing";
+import {
+  LISTING_CATEGORIES,
+  LISTING_REGIONS,
+  LISTING_SUBCATEGORIES,
+} from "@/lib/types/listing";
 
 interface ListingFiltersProps {
   defaultQuery?: string;
   defaultCategory?: string;
+  defaultSubcategory?: string;
   defaultRegion?: string;
+  defaultCondition?: string;
 }
 
 export function ListingFilters({
   defaultQuery = "",
   defaultCategory = "",
+  defaultSubcategory = "",
   defaultRegion = "",
+  defaultCondition = "",
 }: ListingFiltersProps) {
   return (
     <form
@@ -62,6 +70,32 @@ export function ListingFilters({
 
         <div>
           <label
+            htmlFor="filter-subcategory"
+            className="mb-1.5 block text-sm font-medium text-text-secondary"
+          >
+            세부 품목
+          </label>
+          <select
+            id="filter-subcategory"
+            name="subcategory"
+            defaultValue={defaultSubcategory}
+            className="w-full rounded-md border border-border px-3 py-2 text-sm text-text-primary focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          >
+            <option value="">전체 세부 품목</option>
+            {LISTING_CATEGORIES.map((category) => (
+              <optgroup key={category} label={category}>
+                {LISTING_SUBCATEGORIES[category].map((subcategory) => (
+                  <option key={`${category}-${subcategory}`} value={subcategory}>
+                    {subcategory}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label
             htmlFor="filter-region"
             className="mb-1.5 block text-sm font-medium text-text-secondary"
           >
@@ -78,6 +112,25 @@ export function ListingFilters({
                 {region === "전국" ? "전국" : region}
               </option>
             ))}
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="filter-condition"
+            className="mb-1.5 block text-sm font-medium text-text-secondary"
+          >
+            장비 상태
+          </label>
+          <select
+            id="filter-condition"
+            name="condition"
+            defaultValue={defaultCondition}
+            className="w-full rounded-md border border-border px-3 py-2 text-sm text-text-primary focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          >
+            <option value="">신품·중고 전체</option>
+            <option value="중고">중고</option>
+            <option value="신품">신품</option>
           </select>
         </div>
 

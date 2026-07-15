@@ -34,3 +34,12 @@ body {
   color: var(--foreground);
   font-family: var(--font-noto-sans-kr), "Malgun Gothic", sans-serif;
 }
+
+::selection {
+  background: rgba(26, 86, 50, 0.18);
+}
+
+:focus-visible {
+  outline: 3px solid rgba(230, 126, 34, 0.35);
+  outline-offset: 2px;
+}
