@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getListingById, listings } from "@/lib/data/listings";
+import { listings } from "@/lib/data/listings";
+import { getListingById } from "@/lib/data/listing-repository";
 import { formatDate, formatPrice } from "@/lib/utils/format";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { CategoryBadge, StatusBadge } from "@/components/ui/Badge";
+
+interface ListingDetailPageProps {
+  params: Promise<{ id: string }>;
+}
 
 export async function generateStaticParams() {
   return listings.map((listing) => ({
@@ -14,9 +19,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps<"/listings/[id]">): Promise<Metadata> {
+}: ListingDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const listing = getListingById(id);
+  const listing = await getListingById(id);
 
   if (!listing) {
     return { title: "매물을 찾을 수 없습니다" };
@@ -30,9 +35,9 @@ export async function generateMetadata({
 
 export default async function ListingDetailPage({
   params,
-}: PageProps<"/listings/[id]">) {
+}: ListingDetailPageProps) {
   const { id } = await params;
-  const listing = getListingById(id);
+  const listing = await getListingById(id);
 
   if (!listing) {
     notFound();
@@ -107,6 +112,20 @@ export default async function ListingDetailPage({
                 {listing.manufacturer}
               </dd>
             </div>
+            {listing.model && (
+              <div>
+                <dt className="text-sm text-text-muted">모델명</dt>
+                <dd className="mt-0.5 font-semibold text-text-primary">{listing.model}</dd>
+              </div>
+            )}
+            {typeof listing.usageHours === "number" && (
+              <div>
+                <dt className="text-sm text-text-muted">사용 시간</dt>
+                <dd className="mt-0.5 font-semibold text-text-primary">
+                  {listing.usageHours.toLocaleString("ko-KR")}시간
+                </dd>
+              </div>
+            )}
             <div>
               <dt className="text-sm text-text-muted">등록일</dt>
               <dd className="mt-0.5 font-semibold text-text-primary">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listings } from "@/lib/data/listings";
+import { getAllListings } from "@/lib/data/listing-repository";
 import { filterListings } from "@/lib/utils/filter-listings";
 import { buildListingsQuery } from "@/lib/utils/filter-listings";
 import Link from "next/link";
@@ -33,6 +33,7 @@ export default async function ListingsPage({
   }>;
 }) {
   const params = await searchParams;
+  const listings = await getAllListings();
   const filters = {
     q: getFilterValue(params.q),
     category: getFilterValue(params.category),
