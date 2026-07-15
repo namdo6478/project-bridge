@@ -38,7 +38,9 @@ export function SellForm() {
       subcategory: String(data.get("subcategory") ?? ""),
       condition: String(data.get("condition") ?? ""),
       region: String(data.get("region") ?? ""),
-      price: priceNegotiable ? "가격 협의" : String(data.get("price") ?? ""),
+      price: priceNegotiable
+        ? "가격 협의"
+        : `${Number(data.get("price") ?? 0).toLocaleString("ko-KR")}원`,
       contact: String(data.get("contact") ?? ""),
     });
 

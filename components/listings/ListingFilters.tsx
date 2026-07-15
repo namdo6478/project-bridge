@@ -11,6 +11,7 @@ interface ListingFiltersProps {
   defaultSubcategory?: string;
   defaultRegion?: string;
   defaultCondition?: string;
+  defaultSort?: string;
 }
 
 export function ListingFilters({
@@ -19,6 +20,7 @@ export function ListingFilters({
   defaultSubcategory = "",
   defaultRegion = "",
   defaultCondition = "",
+  defaultSort = "newest",
 }: ListingFiltersProps) {
   return (
     <form
@@ -65,6 +67,25 @@ export function ListingFilters({
                 {category}
               </option>
             ))}
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="filter-sort"
+            className="mb-1.5 block text-sm font-medium text-text-secondary"
+          >
+            정렬
+          </label>
+          <select
+            id="filter-sort"
+            name="sort"
+            defaultValue={defaultSort}
+            className="w-full rounded-md border border-border px-3 py-2 text-sm text-text-primary focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+          >
+            <option value="newest">최신 등록순</option>
+            <option value="price-low">낮은 가격순</option>
+            <option value="price-high">높은 가격순</option>
           </select>
         </div>
 
