@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listings } from "@/lib/data/listings";
+import { getAllListings } from "@/lib/data/listing-repository";
 import {
   LISTING_CATEGORIES,
   LISTING_CATEGORY_DETAILS,
@@ -8,7 +8,8 @@ import {
 import { buildListingsQuery } from "@/lib/utils/filter-listings";
 import { ListingGrid } from "@/components/listings/ListingGrid";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const listings = await getAllListings();
   const openListings = listings.filter((item) => item.status !== "판매완료");
   const featuredListings = openListings.slice(0, 6);
 

@@ -116,6 +116,9 @@ export interface Listing {
   status: SaleStatus;
   condition: ListingCondition;
   manufacturer: string;
+  model?: string;
+  usageHours?: number;
+  tradeOptions?: string[];
   description: string;
   createdAt: string;
 }

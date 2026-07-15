@@ -14,7 +14,7 @@ export default function SellPage() {
           <p className="text-sm font-semibold text-brand">SELL EQUIPMENT</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-text-primary">장비 팔기</h1>
           <p className="mt-3 max-w-2xl leading-relaxed text-text-secondary">
-            정확한 품목과 상태, 가격을 적을수록 구매자에게 더 빠르게 연결됩니다. 지금은 등록 화면과 입력 흐름을 먼저 확인할 수 있습니다.
+            정확한 품목과 상태, 가격을 적을수록 구매자에게 더 빠르게 연결됩니다. 입력 내용을 미리 확인한 뒤 실제 매물로 등록할 수 있습니다.
           </p>
           <ol className="mt-7 grid max-w-2xl grid-cols-3 gap-2" aria-label="등록 단계">
             {[

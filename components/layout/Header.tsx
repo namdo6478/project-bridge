@@ -58,6 +58,9 @@ export function Header() {
             <Link href="/listings" className="ml-3 rounded-md border border-brand/25 px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand/5">
               매물 찾기
             </Link>
+            <Link href="/login" className="ml-1 rounded-md px-3 py-2 text-sm font-semibold text-text-secondary transition hover:bg-surface-muted hover:text-brand">
+              로그인
+            </Link>
             <Link href="/sell" className="ml-1 rounded-md bg-accent px-4 py-2 text-sm font-bold text-white transition hover:bg-accent-hover">
               장비 팔기
             </Link>
@@ -93,6 +96,9 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-md px-3 py-2.5 text-sm font-medium text-text-secondary">
+                로그인·회원가입
+              </Link>
               <Link href="/sell" onClick={() => setMenuOpen(false)} className="mt-1 rounded-md bg-accent px-3 py-2.5 text-center text-sm font-bold text-white">
                 장비 팔기
               </Link>

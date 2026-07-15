@@ -1,6 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { useActionState, useRef, useState } from "react";
+import {
+  createListing,
+  initialCreateListingState,
+} from "@/app/sell/actions";
 import {
   LISTING_CATEGORIES,
   LISTING_REGIONS,
@@ -24,13 +29,18 @@ const inputClass =
 const labelClass = "block text-sm font-semibold text-text-primary";
 
 export function SellForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [category, setCategory] = useState<ListingCategory>(LISTING_CATEGORIES[0]);
   const [priceNegotiable, setPriceNegotiable] = useState(false);
   const [preview, setPreview] = useState<PreviewData | null>(null);
+  const [state, formAction, pending] = useActionState(
+    createListing,
+    initialCreateListingState,
+  );
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handlePreview = () => {
+    if (!formRef.current) return;
+    const data = new FormData(formRef.current);
 
     setPreview({
       title: String(data.get("title") ?? ""),
@@ -51,7 +61,7 @@ export function SellForm() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form ref={formRef} action={formAction} className="space-y-6">
         <section className="rounded-xl border border-border bg-white p-5 sm:p-7">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -71,7 +81,8 @@ export function SellForm() {
               <span className="mt-2 text-sm font-semibold text-brand">사진 선택하기</span>
               <span className="mt-1 text-xs text-text-muted">정면·측면·명판·사용 흔적 사진을 권장합니다</span>
             </label>
-            <input id="photos" name="photos" type="file" accept="image/*" multiple className="sr-only" />
+            <input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" />
+            <p className="mt-2 text-xs text-text-muted">사진 선택과 업로드는 다음 작업에서 연결됩니다. 현재 등록에는 장비 정보가 먼저 저장됩니다.</p>
           </div>
 
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -224,9 +235,33 @@ export function SellForm() {
           <p className="mt-1">장비를 확인하기 전 계약금이나 운송비 선입금을 요구하는 거래에 주의하세요.</p>
         </div>
 
-        <button type="submit" className="w-full rounded-xl bg-accent px-6 py-4 text-base font-bold text-white shadow-sm transition hover:bg-accent-hover">
-          입력 내용 미리보기
-        </button>
+        {state.status !== "idle" && (
+          <div
+            role="status"
+            className={`rounded-xl border p-4 text-sm leading-relaxed ${
+              state.status === "success"
+                ? "border-brand/20 bg-brand/5 text-brand"
+                : "border-red-200 bg-red-50 text-red-700"
+            }`}
+          >
+            <p className="font-semibold">{state.message}</p>
+            {state.status === "error" && state.message.includes("로그인") && (
+              <Link href="/login" className="mt-2 inline-flex font-bold underline">로그인 화면으로 이동</Link>
+            )}
+            {state.status === "success" && state.listingId && (
+              <Link href={`/listings/${state.listingId}`} className="mt-2 inline-flex font-bold underline">등록한 매물 보기</Link>
+            )}
+          </div>
+        )}
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <button type="button" onClick={handlePreview} className="w-full rounded-xl border border-brand/25 bg-white px-6 py-4 text-base font-bold text-brand transition hover:bg-brand/5">
+            입력 내용 미리보기
+          </button>
+          <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent px-6 py-4 text-base font-bold text-white shadow-sm transition hover:bg-accent-hover disabled:cursor-wait disabled:opacity-60">
+            {pending ? "등록 중..." : "매물 등록하기"}
+          </button>
+        </div>
       </form>
 
       <aside className="space-y-4 lg:sticky lg:top-24">
@@ -250,7 +285,7 @@ export function SellForm() {
               <div className="flex justify-between gap-3"><dt className="text-text-muted">가격</dt><dd className="font-bold text-brand">{preview.price || "미입력"}</dd></div>
               <div className="flex justify-between gap-3"><dt className="text-text-muted">연락처</dt><dd className="font-medium">{preview.contact}</dd></div>
             </dl>
-            <p className="mt-4 rounded-lg bg-brand/5 p-3 text-xs leading-relaxed text-brand">입력 흐름 확인 완료. 실제 저장·로그인은 다음 스프린트에서 연결합니다.</p>
+            <p className="mt-4 rounded-lg bg-brand/5 p-3 text-xs leading-relaxed text-brand">입력 흐름 확인 완료. 로그인 후 매물 등록하기를 누르면 실제 데이터베이스에 저장됩니다.</p>
           </div>
         ) : (
           <div className="rounded-xl border border-dashed border-border bg-white p-5 text-sm leading-relaxed text-text-secondary">
