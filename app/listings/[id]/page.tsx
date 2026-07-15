@@ -63,7 +63,7 @@ export default async function ListingDetailPage({
 
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <PlaceholderImage
-          category={listing.category}
+          category={listing.subcategory}
           className="aspect-[4/3] w-full rounded-lg border border-border"
           priority
         />
@@ -71,6 +71,9 @@ export default async function ListingDetailPage({
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <CategoryBadge category={listing.category} />
+            <span className="rounded bg-brand/5 px-2 py-0.5 text-xs font-medium text-brand">
+              {listing.subcategory}
+            </span>
             <StatusBadge status={listing.status} />
             <span className="rounded bg-surface-muted px-2 py-0.5 text-xs font-medium text-text-secondary">
               {listing.condition}
@@ -112,14 +115,16 @@ export default async function ListingDetailPage({
             </div>
           </dl>
 
-          {listing.status === "판매중" && (
+          {(listing.status === "판매중" || listing.status === "구매요청") && (
             <button
               type="button"
               disabled
               className="mt-6 w-full cursor-not-allowed rounded-md bg-accent/60 px-6 py-3 text-sm font-semibold text-white"
               title="문의 기능은 추후 제공 예정입니다"
             >
-              판매자에게 문의 (준비 중)
+              {listing.status === "구매요청"
+                ? "구매 희망자에게 제안 (준비 중)"
+                : "판매자에게 문의 (준비 중)"}
             </button>
           )}
         </div>

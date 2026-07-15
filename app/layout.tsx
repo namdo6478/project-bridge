@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | 축산기계장터",
   },
   description:
-    "전국 축산기계 중고·신품 거래 플랫폼. 사각압축포장기, 사료배합기, 컨베이어, 베일집게 등 축산기계 매물을 검색하고 거래하세요.",
+    "조사료 장비, 사료 장비, 축사시설과 부품까지 전국 축산기계 중고·신품 매물을 검색하고 거래하세요.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="ko" className={`${notoSansKr.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white text-text-primary">
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-[68px] md:pb-0">{children}</main>
         <footer className="border-t border-border bg-surface-muted">
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

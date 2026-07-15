@@ -1,8 +1,7 @@
 import Image from "next/image";
-import type { ListingCategory } from "@/lib/types/listing";
 
 interface PlaceholderImageProps {
-  category: ListingCategory;
+  category: string;
   className?: string;
   priority?: boolean;
 }
