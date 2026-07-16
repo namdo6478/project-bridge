@@ -37,11 +37,13 @@
 
 ## 구현 순서
 
-1. 인증 공급자와 데이터베이스 확정
-2. 사용자·프로필 테이블과 휴대폰 인증 상태 연결
+1. Supabase 프로젝트 생성과 환경변수 연결
+2. 준비된 마이그레이션으로 사용자·프로필·매물·사진·문의·신고 테이블과 RLS 적용
 3. 매물·사진 저장, 소유권 검사, 임시 저장 복구
 4. 관심 매물과 문의 저장
 5. 신고·관리자 권한·감사 로그 연결
 6. 백업, 보존 기간, 탈퇴·삭제 작업 자동화
 
 코드 계약은 `lib/types/marketplace.ts`, 저장소 경계는 `lib/data/marketplace-repository.ts`, 공통 권한 함수는 `lib/data/authorization.ts`에 있습니다.
+
+초기 PostgreSQL/Supabase 스키마는 `supabase/migrations`에 준비되어 있습니다. 버킷은 비공개로 두고 승인된 매물 사진만 정책으로 읽게 하며, 업로드 경로는 `{user_id}/{listing_id}/{file}` 형식을 사용합니다.
