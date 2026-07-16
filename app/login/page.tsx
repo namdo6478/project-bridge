@@ -1,0 +1,27 @@
+import type { Metadata } from "next";
+import { LoginForm } from "@/components/auth/LoginForm";
+
+export const metadata: Metadata = {
+  title: "로그인",
+  description: "축산기계장터 로그인과 회원가입 화면을 확인하세요.",
+};
+
+export default function LoginPage() {
+  return (
+    <div className="bg-surface-muted px-4 py-12 sm:py-20">
+      <div className="mx-auto max-w-md rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
+        <p className="text-sm font-semibold text-brand">ACCOUNT</p>
+        <h1 className="mt-2 text-2xl font-bold text-text-primary">로그인·회원가입</h1>
+        <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+          매물 등록, 관심 매물, 문의 내역을 한 계정에서 관리하기 위한 화면입니다.
+        </p>
+
+        <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-relaxed text-amber-900">
+          <strong>로그인 화면 미리보기</strong>
+          <p className="mt-1">입력과 전환 흐름을 확인할 수 있습니다. 공개 화면에 입력한 정보는 저장되거나 전송되지 않습니다.</p>
+        </div>
+        <LoginForm />
+      </div>
+    </div>
+  );
+}

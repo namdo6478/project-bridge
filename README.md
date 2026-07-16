@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 축산기계장터
 
-## Getting Started
+전국 축산기계의 중고·신품 매물을 찾고, 등록하고, 문의하는 흐름을 검증하기 위한 반응형 MVP입니다.
 
-First, run the development server:
+## 현재 구현 범위
+
+- 홈, 카테고리, 키워드·지역·상태 필터, 가격 정렬
+- 매물 목록과 상세, 사진 갤러리, 관심 매물 비교
+- 장비 등록 입력·미리보기, 사진 추가·삭제·대표 지정·순서 변경
+- 내 매물 수정·삭제·판매 상태 변경
+- 구매 문의 작성, 받은·보낸 문의 상태 관리
+- 신고 접수, 안전거래 안내, 운영자 신고 검수
+- 로그인·회원가입 및 판매자 정보 입력 흐름 예시
+- 모바일·태블릿·PC 반응형 UI
+
+현재 상호작용은 화면 검토용이며, 입력 데이터는 서버에 저장되지 않습니다.
+
+## 주요 경로
+
+- `/` 메인
+- `/listings` 매물 검색·목록
+- `/listings/[id]` 매물 상세
+- `/sell` 장비 등록
+- `/favorites` 관심 매물 비교
+- `/my-listings` 내 매물 관리
+- `/inquiries` 문의 관리
+- `/safety` 안전거래
+- `/admin` 운영 화면 예시
+- `/guide` 이용 안내
+- `/roadmap` 개발 현황
+
+## 다음 개발 순서
+
+1. 공개 회원가입 방식 확정
+2. 사용자·매물·문의·관심 매물 데이터 저장 연결
+3. 실제 사진 저장과 업로드 복구
+4. 알림·연락처 보호·신고 운영
+5. 판매점 전용 기능과 운영 통계
+
+## 로컬 확인
 
 ```bash
+npm ci
+npm run lint
+npx tsc --noEmit
+npm run build
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+배포 주소가 정해지면 `.env.local`의 `NEXT_PUBLIC_SITE_URL`에 입력합니다.
