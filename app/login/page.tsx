@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export const metadata: Metadata = {
   title: "로그인",
@@ -7,6 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
+  const configured = isSupabaseConfigured();
+
   return (
     <div className="bg-surface-muted px-4 py-12 sm:py-20">
       <div className="mx-auto max-w-md rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
@@ -16,11 +19,11 @@ export default function LoginPage() {
           매물 등록, 관심 매물, 문의 내역을 한 계정에서 관리하기 위한 화면입니다.
         </p>
 
-        <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-relaxed text-amber-900">
-          <strong>로그인 화면 미리보기</strong>
-          <p className="mt-1">입력과 전환 흐름을 확인할 수 있습니다. 공개 화면에 입력한 정보는 저장되거나 전송되지 않습니다.</p>
+        <div className={`mt-5 rounded-lg border p-3 text-sm leading-relaxed ${configured ? "border-brand/20 bg-brand/5 text-brand" : "border-amber-200 bg-amber-50 text-amber-900"}`}>
+          <strong>{configured ? "휴대폰 인증 연결됨" : "로그인 화면 미리보기"}</strong>
+          <p className="mt-1">{configured ? "문자로 받은 인증번호를 확인하면 실제 로그인 세션이 만들어집니다." : "공개 데모 인증번호 123456으로 전체 흐름을 확인할 수 있으며 입력 정보는 전송되지 않습니다."}</p>
         </div>
-        <LoginForm />
+        <LoginForm configured={configured} />
       </div>
     </div>
   );

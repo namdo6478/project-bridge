@@ -25,3 +25,4 @@ Publishable key는 브라우저에서 사용할 수 있지만 RLS가 반드시 �
 - `lib/supabase/server.ts`: Server Component·Server Action용 클라이언트
 - `proxy.ts`: 로그인 쿠키 갱신과 캐시 방지 헤더 전달
 - `supabase/migrations`: 테이블, 인덱스, RLS, 사진 버킷 정책
+- `components/auth/LoginForm.tsx`: 휴대폰 OTP 발송·확인, 미연결 환경의 데모 대체 흐름

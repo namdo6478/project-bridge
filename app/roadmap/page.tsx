@@ -17,7 +17,7 @@ const completed = [
 ];
 
 const phases = [
-  { number: "01", title: "회원과 데이터 연결", description: "회원가입 방식 확정, 사용자·매물·문의·관심 매물 데이터를 실제 저장 구조에 연결합니다.", state: "다음 우선순위" },
+  { number: "01", title: "회원과 데이터 연결", description: "휴대폰 OTP 화면, 데이터 계약, 테이블과 권한 정책을 준비했습니다. 실제 프로젝트 키를 연결하면 저장을 시작합니다.", state: "연결 기반 완료" },
   { number: "02", title: "실제 사진 업로드", description: "사진 압축, 대표 사진, 순서 변경, 삭제와 업로드 실패 복구를 연결합니다.", state: "준비됨" },
   { number: "03", title: "알림과 연락 보호", description: "문의 알림, 연락처 공개 범위, 차단과 신고 이력을 사용자별로 관리합니다.", state: "후속" },
   { number: "04", title: "운영과 성장", description: "관리자 권한, 매물 검수, 통계, 검색 품질, 판매점 전용 기능을 확장합니다.", state: "확장" },
