@@ -7,6 +7,7 @@ import {
   LISTING_SUBCATEGORIES,
   type ListingCategory,
 } from "@/lib/types/listing";
+import { loadStoredSellerProfile } from "@/lib/account/profile-storage";
 
 interface PreviewData {
   title: string;
@@ -24,9 +25,17 @@ interface SelectedPhoto {
   previewUrl: string;
 }
 
+interface SellDraft {
+  fields: Record<string, string[]>;
+  category: ListingCategory;
+  priceNegotiable: boolean;
+  savedAt: string;
+}
+
 const MAX_PHOTOS = 8;
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const DRAFT_STORAGE_KEY = "chuksan-market:sell-draft:v1";
 
 const inputClass =
   "mt-1.5 w-full rounded-lg border border-border bg-white px-3.5 py-3 text-sm text-text-primary outline-none transition placeholder:text-text-muted focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -40,7 +49,65 @@ export function SellForm() {
   const [registrationMessage, setRegistrationMessage] = useState(false);
   const [photos, setPhotos] = useState<SelectedPhoto[]>([]);
   const [photoMessage, setPhotoMessage] = useState("");
+  const [draftMessage, setDraftMessage] = useState("");
+  const [draftSavedAt, setDraftSavedAt] = useState("");
   const photosRef = useRef<SelectedPhoto[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
+  const draftTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(DRAFT_STORAGE_KEY);
+    let draft: SellDraft | null = null;
+
+    if (stored) {
+      try {
+        draft = JSON.parse(stored) as SellDraft;
+      } catch {
+        window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+      }
+    }
+
+    window.setTimeout(() => {
+      if (draft) {
+        setCategory(draft.category);
+        setPriceNegotiable(draft.priceNegotiable);
+        setDraftSavedAt(draft.savedAt);
+      }
+
+      window.setTimeout(() => {
+        const form = formRef.current;
+        if (!form) return;
+
+        if (draft) {
+          Object.entries(draft.fields).forEach(([name, values]) => {
+            form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${name}"]`).forEach((field) => {
+              if (field instanceof HTMLInputElement && (field.type === "checkbox" || field.type === "radio")) {
+                field.checked = values.includes(field.value);
+              } else if (values[0] !== undefined) {
+                field.value = values[0];
+              }
+            });
+          });
+        }
+
+        const profile = loadStoredSellerProfile();
+        if (profile) {
+          const sellerName = form.elements.namedItem("sellerName") as HTMLInputElement | null;
+          const contact = form.elements.namedItem("contact") as HTMLInputElement | null;
+          const region = form.elements.namedItem("region") as HTMLSelectElement | null;
+          if (sellerName && !sellerName.value) sellerName.value = profile.displayName;
+          if (contact && !contact.value) contact.value = profile.phone;
+          if (region && !region.value && profile.region) region.value = profile.region;
+        }
+
+        if (draft) {
+          setDraftMessage("이전에 입력하던 내용을 자동으로 불러왔습니다. 사진은 보안을 위해 다시 선택해 주세요.");
+        } else if (profile) {
+          setDraftMessage("내 정보에 저장된 이름, 연락처와 지역을 자동으로 입력했습니다.");
+        }
+      }, 0);
+    }, 0);
+  }, []);
 
   useEffect(() => {
     photosRef.current = photos;
@@ -49,8 +116,45 @@ export function SellForm() {
   useEffect(() => {
     return () => {
       photosRef.current.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+      if (draftTimerRef.current !== null) window.clearTimeout(draftTimerRef.current);
     };
   }, []);
+
+  const saveDraft = (nextCategory = category, nextPriceNegotiable = priceNegotiable) => {
+    if (draftTimerRef.current !== null) window.clearTimeout(draftTimerRef.current);
+
+    draftTimerRef.current = window.setTimeout(() => {
+      const form = formRef.current;
+      if (!form) return;
+
+      const fields: Record<string, string[]> = {};
+      new FormData(form).forEach((value, name) => {
+        if (typeof value !== "string") return;
+        fields[name] = [...(fields[name] ?? []), value];
+      });
+
+      const savedAt = new Date().toISOString();
+      const draft: SellDraft = { fields, category: nextCategory, priceNegotiable: nextPriceNegotiable, savedAt };
+      window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+      setDraftSavedAt(savedAt);
+      setDraftMessage("입력 내용이 이 기기에 자동 임시저장됐습니다.");
+    }, 700);
+  };
+
+  const clearDraft = () => {
+    if (draftTimerRef.current !== null) window.clearTimeout(draftTimerRef.current);
+    window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setDraftSavedAt("");
+    setDraftMessage("임시저장 내용을 삭제했습니다. 현재 화면의 입력값은 그대로 유지됩니다.");
+  };
+
+  const completeDemoRegistration = () => {
+    const form = formRef.current;
+    if (!form?.reportValidity()) return;
+    window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setDraftSavedAt("");
+    setRegistrationMessage(true);
+  };
 
   const handlePhotoChange = (files: FileList | null) => {
     if (!files) return;
@@ -135,7 +239,18 @@ export function SellForm() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form ref={formRef} onSubmit={handleSubmit} onInput={() => saveDraft()} className="space-y-6">
+        <div className="rounded-xl border border-brand/20 bg-brand/5 p-4 text-sm leading-relaxed text-brand">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <strong>입력 내용 자동 임시저장</strong>
+              <p className="mt-1 text-xs text-text-secondary">사진을 제외한 입력값만 현재 기기에 저장됩니다. 다른 휴대폰이나 PC에서는 보이지 않습니다.</p>
+              {draftMessage && <p className="mt-2 text-xs font-semibold text-brand" role="status">{draftMessage}</p>}
+              {draftSavedAt && <p className="mt-1 text-[11px] text-text-muted">마지막 저장: {new Date(draftSavedAt).toLocaleString("ko-KR")}</p>}
+            </div>
+            {draftSavedAt && <button type="button" onClick={clearDraft} className="rounded-lg border border-brand/20 bg-white px-3 py-2 text-xs font-bold text-brand">임시저장 삭제</button>}
+          </div>
+        </div>
         <section className="rounded-xl border border-border bg-white p-5 sm:p-7">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -215,7 +330,11 @@ export function SellForm() {
               <select
                 name="category"
                 value={category}
-                onChange={(event) => setCategory(event.target.value as ListingCategory)}
+                onChange={(event) => {
+                  const nextCategory = event.target.value as ListingCategory;
+                  setCategory(nextCategory);
+                  saveDraft(nextCategory, priceNegotiable);
+                }}
                 required
                 className={inputClass}
               >
@@ -306,7 +425,10 @@ export function SellForm() {
               type="checkbox"
               name="priceNegotiable"
               checked={priceNegotiable}
-              onChange={(event) => setPriceNegotiable(event.target.checked)}
+              onChange={(event) => {
+                setPriceNegotiable(event.target.checked);
+                saveDraft(category, event.target.checked);
+              }}
               className="h-4 w-4 accent-brand"
             />
             가격을 정하지 않고 협의로 등록
@@ -370,7 +492,7 @@ export function SellForm() {
           <button type="submit" className="w-full rounded-xl border border-brand/25 bg-white px-6 py-4 text-base font-bold text-brand transition hover:bg-brand/5">
             입력 내용 미리보기
           </button>
-          <button type="button" onClick={() => setRegistrationMessage(true)} className="w-full rounded-xl bg-accent px-6 py-4 text-base font-bold text-white shadow-sm transition hover:bg-accent-hover">
+          <button type="button" onClick={completeDemoRegistration} className="w-full rounded-xl bg-accent px-6 py-4 text-base font-bold text-white shadow-sm transition hover:bg-accent-hover">
             매물 등록하기
           </button>
         </div>

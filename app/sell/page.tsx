@@ -32,8 +32,8 @@ export default function SellPage() {
       </section>
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-5 rounded-xl border border-brand/20 bg-brand/5 p-4 text-sm leading-relaxed text-brand">
-          <strong>등록 화면 미리보기</strong>
-          <p className="mt-1">사진 순서와 입력 내용을 직접 확인할 수 있습니다. 현재 공개 화면에 입력한 정보는 저장되거나 전송되지 않습니다.</p>
+          <strong>등록 화면 미리보기와 자동 임시저장</strong>
+          <p className="mt-1">사진 순서와 입력 내용을 확인할 수 있습니다. 사진을 제외한 입력값은 현재 기기에만 임시저장되며 서버로 전송되지 않습니다.</p>
         </div>
         <SellForm />
       </div>
