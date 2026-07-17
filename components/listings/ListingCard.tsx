@@ -3,6 +3,7 @@ import type { Listing } from "@/lib/types/listing";
 import { formatPrice } from "@/lib/utils/format";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { CategoryBadge, StatusBadge } from "@/components/ui/Badge";
+import { getListingFreshness } from "@/lib/listings/freshness";
 
 interface ListingCardProps {
   listing: Listing;
@@ -10,6 +11,8 @@ interface ListingCardProps {
 }
 
 export function ListingCard({ listing, priority = false }: ListingCardProps) {
+  const freshness = getListingFreshness(listing.confirmedAt);
+
   return (
     <Link
       href={`/listings/${listing.id}`}
@@ -28,6 +31,11 @@ export function ListingCard({ listing, priority = false }: ListingCardProps) {
         <p className="-mt-1 text-xs font-medium text-brand-light">
           {listing.subcategory}
         </p>
+        {listing.status !== "판매완료" && (
+          <p className={`text-xs font-semibold ${freshness.state === "check" || freshness.state === "hidden" ? "text-amber-700" : "text-text-muted"}`}>
+            {freshness.label}
+          </p>
+        )}
         <h3 className="line-clamp-2 text-base font-semibold leading-snug text-text-primary group-hover:text-brand">
           {listing.title}
         </h3>

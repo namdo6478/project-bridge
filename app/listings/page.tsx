@@ -5,6 +5,7 @@ import { buildListingsQuery } from "@/lib/utils/filter-listings";
 import Link from "next/link";
 import { ListingFilters } from "@/components/listings/ListingFilters";
 import { ListingGrid } from "@/components/listings/ListingGrid";
+import { SavedSearches } from "@/components/listings/SavedSearches";
 
 export const metadata: Metadata = {
   title: "매물 목록",
@@ -47,6 +48,11 @@ export default async function ListingsPage({
     tradeOption: getFilterValue(params.tradeOption),
   };
   const sort = getFilterValue(params.sort) || "newest";
+  const activeFilterValues = [filters.q, filters.category, filters.subcategory, filters.region && filters.region !== "전국" ? filters.region : "", filters.condition, filters.status, filters.priceMode, filters.tradeOption].filter(Boolean);
+  const filterLabels: Record<string, string> = { available: "현재 연락 가능", fixed: "가격 표시", negotiable: "가격 협의" };
+  const currentLabel = activeFilterValues.map((value) => filterLabels[value] ?? value).join(" · ") || "전체 매물";
+  const baseSearchHref = buildListingsQuery(filters);
+  const currentHref = sort !== "newest" ? `${baseSearchHref}${baseSearchHref.includes("?") ? "&" : "?"}sort=${sort}` : baseSearchHref;
 
   const filteredListings = filterListings(listings, filters);
   const sortedListings = [...filteredListings].sort((left, right) => {
@@ -96,6 +102,8 @@ export default async function ListingsPage({
           </Link>
         ))}
       </nav>
+
+      <SavedSearches currentHref={currentHref} currentLabel={currentLabel} resultCount={sortedListings.length} canSave={activeFilterValues.length > 0 || sort !== "newest"} />
 
       <div className="flex flex-col gap-8 lg:flex-row">
         <aside className="w-full shrink-0 lg:w-72">

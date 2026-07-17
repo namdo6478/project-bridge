@@ -10,6 +10,7 @@ import { ListingActivityTracker } from "@/components/listings/ListingActivityTra
 import { DirectContactCard } from "@/components/listings/DirectContactCard";
 import { ShareListingButton } from "@/components/listings/ShareListingButton";
 import { TradeChecklist } from "@/components/listings/TradeChecklist";
+import { getListingFreshness } from "@/lib/listings/freshness";
 
 interface ListingDetailPageProps {
   params: Promise<{ id: string }>;
@@ -46,6 +47,8 @@ export default async function ListingDetailPage({
   if (!listing) {
     notFound();
   }
+
+  const freshness = getListingFreshness(listing.confirmedAt);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -129,6 +132,11 @@ export default async function ListingDetailPage({
               <dd className="mt-0.5 font-semibold text-text-primary">
                 {formatDate(listing.createdAt)}
               </dd>
+            </div>
+            <div className="col-span-2 rounded-lg bg-white p-3">
+              <dt className="text-sm text-text-muted">판매 여부 최근 확인</dt>
+              <dd className={`mt-1 font-semibold ${freshness.state === "check" || freshness.state === "hidden" ? "text-amber-700" : "text-brand"}`}>{formatDate(listing.confirmedAt)} · {freshness.label}</dd>
+              <p className="mt-1 text-xs leading-relaxed text-text-muted">{freshness.detail} 연락 전에 현재 판매 상태를 한 번 더 확인하세요.</p>
             </div>
           </dl>
 

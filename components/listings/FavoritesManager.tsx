@@ -10,6 +10,7 @@ import {
   setFavoriteListingIds,
   subscribeToListingStorage,
 } from "@/lib/listings/device-storage";
+import { getListingFreshness } from "@/lib/listings/freshness";
 
 const initialFavorites = listings.slice(0, 3);
 
@@ -110,8 +111,12 @@ export function FavoritesManager() {
                   ["가격", (item: Listing) => formatPrice(item.price, item.priceNegotiable)],
                   ["지역", (item: Listing) => item.region],
                   ["연식", (item: Listing) => `${item.year}년`],
+                  ["모델", (item: Listing) => item.model ?? "판매자 확인"],
+                  ["사용시간", (item: Listing) => item.usageHours ? `${item.usageHours.toLocaleString("ko-KR")}시간` : "판매자 확인"],
                   ["상태", (item: Listing) => item.condition],
                   ["거래", (item: Listing) => item.status],
+                  ["최근 확인", (item: Listing) => getListingFreshness(item.confirmedAt).label],
+                  ["시운전", (item: Listing) => item.tradeOptions?.includes("시운전 가능") ? "가능" : "판매자 확인"],
                 ].map(([label, getValue]) => (
                   <tr key={label as string}><th className="bg-surface-muted p-4 text-xs font-semibold text-text-muted">{label as string}</th>{selectedItems.map((item) => <td key={item.id} className="p-4 font-medium text-text-secondary">{(getValue as (listing: Listing) => string)(item)}</td>)}</tr>
                 ))}

@@ -47,6 +47,8 @@ export default function GuidePage() {
           </div>
         </section>
 
+        <section className="mt-6 rounded-2xl border border-brand/20 bg-brand/5 p-6 sm:p-7"><h2 className="text-xl font-bold text-text-primary">장터 운영자에게 거래 문의하지 않습니다</h2><p className="mt-3 text-sm leading-relaxed text-text-secondary">가격·장비 상태·운송은 판매자에게 직접 확인합니다. 장터 운영자는 거래를 상담하거나 보증하지 않고 허위·위험 매물 신고를 검수하는 역할만 합니다.</p><div className="mt-4 flex flex-wrap gap-3"><Link href="/inquiries" className="rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-brand">판매자 연락 방법</Link><Link href="/policy" className="rounded-lg border border-brand/20 bg-white px-4 py-2.5 text-sm font-bold text-brand">운영 원칙</Link></div></section>
+
         <section className="mt-6 rounded-2xl bg-brand p-6 text-white sm:p-8">
           <h2 className="text-xl font-bold">입금 전에 실물을 확인하세요</h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/80">장비를 확인하기 전 계약금이나 운송비 선입금을 요구하면 거래를 중단하고, 명판·시운전·수리 이력과 판매자 정보를 다시 확인하세요.</p>

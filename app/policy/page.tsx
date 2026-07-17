@@ -38,6 +38,16 @@ export default function PolicyPage() {
           </div>
         </section>
 
+        <section className="mt-6 rounded-2xl border border-brand/20 bg-white p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-text-primary">판매자가 직접 최신 상태를 관리합니다</h2>
+          <ol className="mt-4 grid gap-3 text-sm leading-relaxed text-text-secondary sm:grid-cols-3">
+            <li className="rounded-xl bg-surface-muted p-4"><strong className="block text-brand">등록 후 30일 이내</strong><span className="mt-1 block">판매중·예약중·판매완료 상태와 연락 조건을 판매자가 직접 유지합니다.</span></li>
+            <li className="rounded-xl bg-amber-50 p-4"><strong className="block text-amber-800">30일이 지나면</strong><span className="mt-1 block">판매 여부 확인이 필요하다고 표시해 판매자에게 갱신을 안내합니다.</span></li>
+            <li className="rounded-xl bg-red-50 p-4"><strong className="block text-red-800">60일 동안 미확인</strong><span className="mt-1 block">삭제하지 않고 검색에서만 잠시 숨깁니다. 판매자가 확인하면 다시 노출됩니다.</span></li>
+          </ol>
+          <p className="mt-4 text-xs leading-relaxed text-text-muted">판매완료 매물은 거래 기록과 시세 참고를 위해 보관합니다. 실제 판매가격 입력은 판매자가 선택할 수 있습니다.</p>
+        </section>
+
         <section className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-6 sm:p-8">
           <h2 className="text-xl font-bold text-red-900">등록할 수 없는 내용</h2>
           <ul className="mt-4 grid gap-2 text-sm leading-relaxed text-red-900 sm:grid-cols-2"><li>소유·판매 권한이 없는 장비</li><li>사진 도용 또는 허위 사양·가격</li><li>불법 개조·도난 의심 장비</li><li>장비 확인 전 선입금만 요구하는 내용</li><li>반복·중복·광고성 게시물</li><li>타인의 개인정보가 포함된 게시물</li></ul>

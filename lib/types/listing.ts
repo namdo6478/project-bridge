@@ -121,6 +121,7 @@ export interface Listing {
   tradeOptions?: string[];
   description: string;
   createdAt: string;
+  confirmedAt: string;
 }
 
 export interface ListingFilters {
