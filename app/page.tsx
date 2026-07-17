@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1fr_420px] lg:items-center lg:px-8 lg:py-20">
           <div className="max-w-2xl">
             <p className="inline-flex rounded-full border border-brand/15 bg-white px-3 py-1 text-sm font-semibold text-brand shadow-sm">
-              전국 축산 현장을 잇는 장비 거래
+              판매자와 구매자가 함께 만드는 축산기계 직거래
             </p>
             <h1 className="mt-5 text-4xl font-bold leading-[1.15] tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
               필요한 장비는 찾고,
@@ -28,7 +28,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg">
               조사료 장비부터 축사 설비, 부품과 신품까지. 지역과 세부 품목으로
-              빠르게 찾고 거래 조건을 한눈에 비교하세요.
+              빠르게 찾고 비교한 뒤 판매자와 직접 연락하세요. 장터는 연결에 집중하고 거래 당사자의 선택을 존중합니다.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -47,7 +47,7 @@ export default function HomePage() {
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text-secondary">
               <span><strong className="text-text-primary">전국</strong> 지역 검색</span>
               <span><strong className="text-text-primary">7개</strong> 대분류</span>
-              <span><strong className="text-text-primary">무료</strong> 매물 등록·관리</span>
+              <span><strong className="text-text-primary">직접</strong> 판매자 연락</span>
             </div>
           </div>
 
@@ -118,6 +118,29 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="border-b border-border bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold text-brand">TOGETHER MARKET</p>
+            <h2 className="mt-1 text-2xl font-bold text-text-primary">판매자와 구매자가 함께 만드는 장터</h2>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">축산기계장터는 물건을 대신 팔거나 거래 대금을 받는 곳이 아닙니다. 좋은 정보가 잘 보이고 거래 당사자가 직접 연결되도록 돕는 공간입니다.</p>
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {[
+              ["판매자", "실제 사진, 장비 상태, 수리 이력, 가격과 연락 가능 시간을 정확하게 알립니다."],
+              ["구매자", "판매자에게 직접 연락하고 명판·시운전·운송 조건을 확인한 뒤 거래를 결정합니다."],
+              ["장터 운영", "매물 검색과 비교, 안전 안내를 제공하고 신고된 허위·위험 매물을 최소한으로 관리합니다."],
+            ].map(([title, description], index) => (
+              <article key={title} className="rounded-xl border border-border bg-surface-muted p-5">
+                <span className="text-xs font-bold text-brand">0{index + 1}</span>
+                <h3 className="mt-2 font-bold text-text-primary">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-text-secondary">{description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
           <div>
@@ -170,7 +193,7 @@ export default function HomePage() {
             <p className="text-sm font-semibold text-white/70">SELL YOUR EQUIPMENT</p>
             <h2 className="mt-2 text-2xl font-bold sm:text-3xl">창고에 쉬고 있는 장비가 있나요?</h2>
             <p className="mt-3 max-w-2xl leading-relaxed text-white/75">
-              장비 전체가 보이는 사진을 첫 번째로 고르고, 명판·사용 흔적·희망 가격을 순서대로 입력하면 됩니다.
+              장비 전체가 보이는 사진을 첫 번째로 고르고, 명판·사용 흔적·희망 가격과 연락 가능 시간을 순서대로 입력하면 됩니다.
             </p>
             <Link
               href="/sell"

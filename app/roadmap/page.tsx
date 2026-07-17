@@ -10,8 +10,9 @@ const completed = [
   "홈·카테고리·검색·정렬·상세 화면",
   "장비 등록 입력·미리보기·사진 순서 관리",
   "등록 입력 자동 임시저장·복구와 판매자 정보 자동 입력",
-  "관심 매물 저장 예시와 2~3대 비교",
-  "구매 문의 작성과 받은·보낸 문의 관리",
+  "관심·최근 본 매물 기기 저장과 2~3대 비교",
+  "휴대폰 인증 후 판매자 직접 연락 흐름",
+  "매물 공유와 직거래 확인 체크리스트",
   "내 매물 수정·삭제·판매 상태 변경",
   "신고 접수·안전거래·운영자 검수 화면",
   "모바일·태블릿·PC 반응형 화면",
@@ -20,8 +21,8 @@ const completed = [
 const phases = [
   { number: "01", title: "회원과 데이터 연결", description: "휴대폰 OTP 화면, 데이터 계약, 테이블과 권한 정책을 준비했습니다. 실제 프로젝트 키를 연결하면 저장을 시작합니다.", state: "연결 기반 완료" },
   { number: "02", title: "실제 사진 업로드", description: "사진 압축, 대표 사진, 순서 변경, 삭제와 업로드 실패 복구를 연결합니다.", state: "준비됨" },
-  { number: "03", title: "알림과 연락 보호", description: "문의 알림, 연락처 공개 범위, 차단과 신고 이력을 사용자별로 관리합니다.", state: "후속" },
-  { number: "04", title: "운영과 성장", description: "관리자 권한, 매물 검수, 통계, 검색 품질, 판매점 전용 기능을 확장합니다.", state: "확장" },
+  { number: "03", title: "직접 연락과 개인정보 보호", description: "판매자가 공개한 전화·문자 방식으로 구매자가 직접 연락하고, 번호 노출과 차단·신고 기준을 관리합니다.", state: "정책 확정" },
+  { number: "04", title: "최소 운영과 성장", description: "운영자는 신고 매물 숨김·삭제에 집중하고, 통계·검색 품질·판매점 기능을 단계적으로 확장합니다.", state: "확장" },
 ];
 
 export default function RoadmapPage() {
@@ -31,7 +32,7 @@ export default function RoadmapPage() {
         <div className="rounded-2xl bg-brand p-7 text-white sm:p-9">
           <p className="text-sm font-semibold text-white/70">MVP ROADMAP</p>
           <h1 className="mt-2 text-3xl font-bold">축산기계장터 개발 현황</h1>
-          <p className="mt-3 max-w-3xl leading-relaxed text-white/80">현재 공개 링크는 핵심 사용 흐름을 직접 눌러보는 검토용 버전입니다. 입력한 정보는 새로고침하면 초기화되며, 다음 단계에서 실제 회원과 데이터 저장 기능을 연결합니다.</p>
+          <p className="mt-3 max-w-3xl leading-relaxed text-white/80">현재 공개 링크는 핵심 사용 흐름을 직접 눌러보는 검토용 버전입니다. 찜·최근 본 매물·등록 임시저장은 현재 기기에 유지되며, 다음 단계에서 실제 회원과 서버 데이터 저장을 연결합니다.</p>
         </div>
 
         <div className="mt-7 grid gap-6 lg:grid-cols-[1fr_1.15fr]">
@@ -57,9 +58,9 @@ export default function RoadmapPage() {
         </div>
 
         <section className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-6 sm:p-7">
-          <p className="text-xs font-bold tracking-[0.12em] text-amber-800">DECISION NEEDED</p>
-          <h2 className="mt-2 text-xl font-bold text-amber-950">실제 회원가입 방식</h2>
-          <p className="mt-2 text-sm leading-relaxed text-amber-900">휴대폰 사용 비중과 거래 신뢰를 고려하면 휴대폰 본인인증을 기본으로 하고, 이후 카카오·네이버 간편가입을 추가하는 순서를 추천합니다. 이 선택이 확정되면 실제 저장과 권한 기능을 연결할 수 있습니다.</p>
+          <p className="text-xs font-bold tracking-[0.12em] text-amber-800">BACKEND CONNECTION</p>
+          <h2 className="mt-2 text-xl font-bold text-amber-950">다음 연결: 실제 회원·매물·사진 저장</h2>
+          <p className="mt-2 text-sm leading-relaxed text-amber-900">휴대폰 인증을 기본으로 하는 정책은 확정했습니다. Supabase 프로젝트 주소와 공개 키, 문자 발송 설정이 준비되면 현재 화면을 그대로 실제 회원·매물·사진 데이터에 연결합니다.</p>
         </section>
       </div>
     </div>

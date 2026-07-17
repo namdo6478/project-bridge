@@ -9,6 +9,9 @@ export function filterListings(
   const subcategory = filters.subcategory?.trim() ?? "";
   const region = filters.region?.trim() ?? "";
   const condition = filters.condition?.trim() ?? "";
+  const status = filters.status?.trim() ?? "";
+  const priceMode = filters.priceMode?.trim() ?? "";
+  const tradeOption = filters.tradeOption?.trim() ?? "";
 
   return items.filter((listing) => {
     const matchesQuery =
@@ -30,12 +33,28 @@ export function filterListings(
     const matchesCondition =
       condition === "" || listing.condition === condition;
 
+    const matchesStatus =
+      status === "" ||
+      (status === "available" && (listing.status === "판매중" || listing.status === "구매요청")) ||
+      listing.status === status;
+
+    const matchesPriceMode =
+      priceMode === "" ||
+      (priceMode === "negotiable" && listing.priceNegotiable) ||
+      (priceMode === "fixed" && !listing.priceNegotiable && listing.price !== null);
+
+    const matchesTradeOption =
+      tradeOption === "" || listing.tradeOptions?.includes(tradeOption);
+
     return (
       matchesQuery &&
       matchesCategory &&
       matchesSubcategory &&
       matchesRegion &&
-      matchesCondition
+      matchesCondition &&
+      matchesStatus &&
+      matchesPriceMode &&
+      matchesTradeOption
     );
   });
 }
@@ -57,6 +76,15 @@ export function buildListingsQuery(filters: ListingFilters): string {
   }
   if (filters.condition?.trim()) {
     params.set("condition", filters.condition.trim());
+  }
+  if (filters.status?.trim()) {
+    params.set("status", filters.status.trim());
+  }
+  if (filters.priceMode?.trim()) {
+    params.set("priceMode", filters.priceMode.trim());
+  }
+  if (filters.tradeOption?.trim()) {
+    params.set("tradeOption", filters.tradeOption.trim());
   }
 
   const query = params.toString();

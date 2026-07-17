@@ -46,13 +46,13 @@ export default function RootLayout({
               <div>
                 <p className="text-sm font-semibold text-brand">축산기계장터</p>
                 <p className="mt-1 text-xs text-text-secondary">
-                  전국 축산기계 중고·신품 거래 플랫폼
+                  판매자와 구매자가 함께 만드는 직거래 공간
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-text-muted">
                 <a href="/guide" className="hover:text-brand">이용 안내</a>
                 <a href="/safety" className="hover:text-brand">안전거래</a>
-                <a href="/inquiries" className="hover:text-brand">문의 내역</a>
+                <a href="/policy" className="hover:text-brand">운영 원칙</a>
                 <a href="/account" className="hover:text-brand">내 정보</a>
                 <a href="/admin" className="hover:text-brand">운영 화면 예시</a>
                 <a href="/roadmap" className="hover:text-brand">개발 현황</a>

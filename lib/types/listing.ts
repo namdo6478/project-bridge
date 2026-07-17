@@ -129,4 +129,7 @@ export interface ListingFilters {
   subcategory?: string;
   region?: string;
   condition?: string;
+  status?: string;
+  priceMode?: string;
+  tradeOption?: string;
 }

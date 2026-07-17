@@ -13,6 +13,9 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "KR Pack",
+    model: "KP-800",
+    usageHours: 1240,
+    tradeOptions: ["시운전 가능", "운송 협의 가능", "정비 이력 있음"],
     description:
       "2019년 구입 후 연 2회 시즌 사용한 대형 사각압축포장기입니다. 실린더 및 체인 상태 양호하며, 현장 시운전 가능합니다. 운송비는 별도 협의합니다.",
     createdAt: "2026-07-01",
@@ -29,6 +32,9 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "FeedMix Pro",
+    model: "FM-5000",
+    usageHours: 860,
+    tradeOptions: ["가격 협의 가능", "시운전 가능", "운송 협의 가능"],
     description:
       "5톤급 TMR 사료배합기로, 사료 균일 혼합 성능이 우수합니다. 스크류 및 교반 날 상태 양호하며, 전기 제어판 교체 완료했습니다. 가격은 현장 확인 후 협의 가능합니다.",
     createdAt: "2026-07-03",
@@ -45,6 +51,8 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "ConveyTech",
+    model: "BC-30",
+    tradeOptions: ["운송 협의 가능", "설치 협의 가능", "정비 이력 있음"],
     description:
       "축사 내 사료 이송용 벨트 컨베이어 30m 세트입니다. 모터 및 베어링 최근 교체했으며, 분해·운송·설치 지원 가능합니다.",
     createdAt: "2026-07-05",
@@ -61,6 +69,9 @@ export const listings: Listing[] = [
     status: "예약중",
     condition: "중고",
     manufacturer: "AgriGrip",
+    model: "BG-180",
+    usageHours: 530,
+    tradeOptions: ["시운전 가능"],
     description:
       "로더 부착형 베일집게로 건초·짚 베일 적재에 적합합니다. 유압 실린더 및 핀 상태 양호하며, 현재 예약 진행 중입니다.",
     createdAt: "2026-07-06",
@@ -77,6 +88,9 @@ export const listings: Listing[] = [
     status: "판매완료",
     condition: "중고",
     manufacturer: "CutMaster",
+    model: "CM-450",
+    usageHours: 1780,
+    tradeOptions: ["정비 이력 있음"],
     description:
       "목초·사료 절단용 카멜 절단기입니다. 날 교체 이력 있으며 작업 효율이 우수합니다. 판매가 완료된 매물입니다.",
     createdAt: "2026-06-20",
@@ -93,6 +107,8 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "신품",
     manufacturer: "AutoFeed",
+    model: "AF-500",
+    tradeOptions: ["운송 협의 가능", "설치 협의 가능", "A/S 1년"],
     description:
       "500L 용량 자동 사료공급기 신품 재고분입니다. 타이머 제어 및 잔량 센서 포함, 설치 매뉴얼 및 A/S 1년 제공합니다.",
     createdAt: "2026-07-08",
@@ -109,6 +125,9 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "CleanFarm",
+    model: "CS-200",
+    usageHours: 2100,
+    tradeOptions: ["가격 협의 가능", "시운전 가능"],
     description:
       "축사 바닥 분뇨 처리용 스크래퍼 장비입니다. 레일 및 구동부 정상 작동하며, 현장 실물 확인 후 가격 협의합니다.",
     createdAt: "2026-07-09",
@@ -125,6 +144,9 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "KR Pack",
+    model: "KP-700",
+    usageHours: 1680,
+    tradeOptions: ["시운전 가능", "정비 이력 있음"],
     description:
       "2018년식 중형 사각압축기입니다. 정기 점검 이력 있으며, 포장 밀도 조절 기능 정상 작동합니다. 시범 작업 가능합니다.",
     createdAt: "2026-07-10",
@@ -141,6 +163,9 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "FeedMix Pro",
+    model: "FM-1000",
+    usageHours: 920,
+    tradeOptions: ["시운전 가능", "운송 협의 가능"],
     description:
       "소규모 축사용 1톤 사료배합기입니다. 전기 380V, 교반 시간 설정 가능하며, 소형 트랙터와 연동 작업에 적합합니다.",
     createdAt: "2026-07-11",
@@ -157,6 +182,8 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "ConveyTech",
+    model: "CT-DRIVE",
+    tradeOptions: ["가격 협의 가능", "설치 협의 가능"],
     description:
       "사료·베일 컨베이어용 구동모터와 체인 세트입니다. 장비 규격에 맞춰 구성 협의 가능하며, 설치 조건에 따라 견적을 조정합니다.",
     createdAt: "2026-07-12",
@@ -173,6 +200,7 @@ export const listings: Listing[] = [
     status: "구매요청",
     condition: "중고",
     manufacturer: "제조사 무관",
+    tradeOptions: ["가격 협의 가능", "직접 확인 가능"],
     description:
       "원형·각형 베일 작업이 가능한 중고 베일집게를 찾습니다. 유압 호스 포함 제품을 우선하며, 경북 인근은 직접 확인 가능합니다.",
     createdAt: "2026-07-13",
@@ -189,6 +217,9 @@ export const listings: Listing[] = [
     status: "판매중",
     condition: "중고",
     manufacturer: "FarmTools",
+    model: "FB-210",
+    usageHours: 640,
+    tradeOptions: ["가격 협의 가능", "시운전 가능"],
     description:
       "퇴비와 사료 운반에 사용한 로더용 다목적 버킷입니다. 용접부 보강과 도색을 완료했으며, 연결 규격은 현장 확인 가능합니다.",
     createdAt: "2026-07-14",

@@ -28,7 +28,7 @@ export default function MyListingsPage() {
 
         <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           <strong>화면 예시를 표시하고 있습니다.</strong>
-          <p className="mt-1">로그인과 데이터베이스를 연결하면 본인이 등록한 매물만 보이고 상태 변경 버튼이 활성화됩니다.</p>
+          <p className="mt-1">현재 상태 변경은 이 기기에 저장되어 새로고침 후에도 유지됩니다. 실제 연결 후에는 본인이 등록한 매물만 표시됩니다.</p>
         </div>
 
         <MyListingsManager initialListings={samples} />

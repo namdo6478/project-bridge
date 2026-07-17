@@ -13,7 +13,7 @@ export default function AccountPage() {
       <div className="mx-auto max-w-3xl">
         <p className="text-sm font-semibold text-brand">ACCOUNT</p>
         <h1 className="mt-1 text-3xl font-bold text-text-primary">내 정보</h1>
-        <p className="mt-2 text-sm text-text-secondary">판매자 이름과 연락처를 한 번 저장하면 매물 등록과 문의 연결에 사용됩니다.</p>
+        <p className="mt-2 text-sm text-text-secondary">판매자 이름과 연락처를 한 번 저장하면 매물 등록과 구매자의 직접 연락에 사용됩니다.</p>
 
         <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900">
           <strong>판매자 정보 저장 데모</strong>

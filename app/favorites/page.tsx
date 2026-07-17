@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FavoritesManager } from "@/components/listings/FavoritesManager";
+import { RecentlyViewedListings } from "@/components/listings/RecentlyViewedListings";
 
 export const metadata: Metadata = {
   title: "관심 매물",
@@ -15,6 +16,7 @@ export default function FavoritesPage() {
         <p className="mt-2 text-sm text-text-secondary">나중에 다시 보거나 가격·지역을 비교할 매물을 모아둡니다.</p>
 
         <FavoritesManager />
+        <RecentlyViewedListings />
       </div>
     </div>
   );

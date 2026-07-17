@@ -6,6 +6,10 @@ import { formatDate, formatPrice } from "@/lib/utils/format";
 import { CategoryBadge, StatusBadge } from "@/components/ui/Badge";
 import { FavoriteButton } from "@/components/listings/FavoriteButton";
 import { ListingGallery } from "@/components/listings/ListingGallery";
+import { ListingActivityTracker } from "@/components/listings/ListingActivityTracker";
+import { DirectContactCard } from "@/components/listings/DirectContactCard";
+import { ShareListingButton } from "@/components/listings/ShareListingButton";
+import { TradeChecklist } from "@/components/listings/TradeChecklist";
 
 interface ListingDetailPageProps {
   params: Promise<{ id: string }>;
@@ -45,6 +49,7 @@ export default async function ListingDetailPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <ListingActivityTracker listingId={listing.id} />
       <Link
         href="/listings"
         className="inline-flex items-center gap-1 text-sm font-medium text-text-secondary hover:text-brand"
@@ -89,7 +94,8 @@ export default async function ListingDetailPage({
             {formatPrice(listing.price, listing.priceNegotiable)}
           </p>
 
-          <FavoriteButton />
+          <FavoriteButton listingId={listing.id} />
+          <ShareListingButton title={listing.title} />
 
           <dl className="mt-6 grid grid-cols-2 gap-4 rounded-lg border border-border bg-surface-muted p-5">
             <div>
@@ -111,6 +117,14 @@ export default async function ListingDetailPage({
               </dd>
             </div>
             <div>
+              <dt className="text-sm text-text-muted">모델</dt>
+              <dd className="mt-0.5 font-semibold text-text-primary">{listing.model ?? "판매자 확인"}</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-text-muted">사용시간</dt>
+              <dd className="mt-0.5 font-semibold text-text-primary">{listing.usageHours ? `${listing.usageHours.toLocaleString("ko-KR")}시간` : "판매자 확인"}</dd>
+            </div>
+            <div>
               <dt className="text-sm text-text-muted">등록일</dt>
               <dd className="mt-0.5 font-semibold text-text-primary">
                 {formatDate(listing.createdAt)}
@@ -118,31 +132,12 @@ export default async function ListingDetailPage({
             </div>
           </dl>
 
-          <section className="mt-4 rounded-lg border border-border bg-white p-5">
-            <div className="flex items-start justify-between gap-4">
-              <div><p className="text-xs font-semibold text-text-muted">판매자 정보</p><h2 className="mt-1 font-bold text-text-primary">{listing.condition === "신품" ? "장비 판매점" : "개인 판매자"}</h2></div>
-              <span className="rounded-full bg-brand/10 px-3 py-1 text-xs font-bold text-brand">연락처 확인 필요</span>
-            </div>
-            <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-border pt-4 text-sm">
-              <div><dt className="text-text-muted">활동 지역</dt><dd className="mt-1 font-semibold text-text-primary">{listing.region}</dd></div>
-              <div><dt className="text-text-muted">연락 방법</dt><dd className="mt-1 font-semibold text-text-primary">문의 후 확인</dd></div>
-            </dl>
-            <p className="mt-4 text-xs leading-relaxed text-text-muted">판매자 이름과 연락처 본인 확인 표시는 실제 회원 기능이 연결된 뒤 표시합니다.</p>
-          </section>
-
-          {(listing.status === "판매중" || listing.status === "구매요청") && (
-            <div className="mt-6">
-              <p className="mb-2 text-xs leading-relaxed text-text-muted">문의 전 연식·모델·수리 이력과 현재 판매 상태를 다시 확인하세요.</p>
-              <Link
-                href={`/listings/${listing.id}/inquiry`}
-                className="block w-full rounded-md bg-accent px-6 py-3 text-center text-sm font-semibold text-white hover:bg-accent-hover"
-              >
-                {listing.status === "구매요청"
-                  ? "구매 희망자에게 제안"
-                  : "판매자에게 문의"}
-              </Link>
-            </div>
-          )}
+          <DirectContactCard
+            listingId={listing.id}
+            region={listing.region}
+            sellerLabel={listing.condition === "신품" ? "장비 판매점" : "개인 판매자"}
+            status={listing.status}
+          />
         </div>
       </div>
 
@@ -151,7 +146,12 @@ export default async function ListingDetailPage({
         <p className="mt-4 whitespace-pre-line leading-relaxed text-text-secondary">
           {listing.description}
         </p>
+        {listing.tradeOptions && listing.tradeOptions.length > 0 && (
+          <div className="mt-6 border-t border-border pt-5"><h3 className="text-sm font-bold text-text-primary">판매자가 표시한 거래 조건</h3><div className="mt-3 flex flex-wrap gap-2">{listing.tradeOptions.map((option) => <span key={option} className="rounded-full bg-brand/10 px-3 py-1.5 text-xs font-bold text-brand">{option}</span>)}</div><p className="mt-3 text-xs leading-relaxed text-text-muted">표시 내용은 판매자가 입력한 정보입니다. 실제 가능 여부와 비용은 직접 연락해 다시 확인하세요.</p></div>
+        )}
       </section>
+
+      <TradeChecklist listingId={listing.id} />
 
       <section className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-6 sm:p-8">
         <h2 className="font-bold text-amber-950">거래 전 꼭 확인하세요</h2>

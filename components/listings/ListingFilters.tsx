@@ -12,6 +12,9 @@ interface ListingFiltersProps {
   defaultRegion?: string;
   defaultCondition?: string;
   defaultSort?: string;
+  defaultStatus?: string;
+  defaultPriceMode?: string;
+  defaultTradeOption?: string;
 }
 
 export function ListingFilters({
@@ -21,6 +24,9 @@ export function ListingFilters({
   defaultRegion = "",
   defaultCondition = "",
   defaultSort = "newest",
+  defaultStatus = "",
+  defaultPriceMode = "",
+  defaultTradeOption = "",
 }: ListingFiltersProps) {
   const activeFilterCount = [
     defaultQuery,
@@ -28,6 +34,9 @@ export function ListingFilters({
     defaultSubcategory,
     defaultRegion && defaultRegion !== "전국" ? defaultRegion : "",
     defaultCondition,
+    defaultStatus,
+    defaultPriceMode,
+    defaultTradeOption,
   ].filter(Boolean).length;
 
   return (
@@ -64,6 +73,36 @@ export function ListingFilters({
             placeholder="예: 원형베일러, 명성"
             className="w-full rounded-md border border-border px-3 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
           />
+        </div>
+
+        <div>
+          <label htmlFor="filter-status" className="mb-1.5 block text-sm font-medium text-text-secondary">거래 상태</label>
+          <select id="filter-status" name="status" defaultValue={defaultStatus} className="w-full rounded-md border border-border px-3 py-3 text-sm text-text-primary focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand">
+            <option value="">전체 상태</option>
+            <option value="available">현재 연락 가능</option>
+            <option value="예약중">예약중</option>
+            <option value="판매완료">판매완료</option>
+            <option value="구매요청">삽니다</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="filter-price-mode" className="mb-1.5 block text-sm font-medium text-text-secondary">가격 방식</label>
+          <select id="filter-price-mode" name="priceMode" defaultValue={defaultPriceMode} className="w-full rounded-md border border-border px-3 py-3 text-sm text-text-primary focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand">
+            <option value="">전체 가격</option>
+            <option value="fixed">가격 표시</option>
+            <option value="negotiable">가격 협의</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="filter-trade-option" className="mb-1.5 block text-sm font-medium text-text-secondary">거래 조건</label>
+          <select id="filter-trade-option" name="tradeOption" defaultValue={defaultTradeOption} className="w-full rounded-md border border-border px-3 py-3 text-sm text-text-primary focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand">
+            <option value="">전체 조건</option>
+            <option value="시운전 가능">시운전 가능</option>
+            <option value="운송 협의 가능">운송 협의 가능</option>
+            <option value="정비 이력 있음">정비 이력 있음</option>
+          </select>
         </div>
 
         <div>

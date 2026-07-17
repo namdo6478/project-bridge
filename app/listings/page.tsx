@@ -30,6 +30,9 @@ export default async function ListingsPage({
     region?: string | string[];
     condition?: string | string[];
     sort?: string | string[];
+    status?: string | string[];
+    priceMode?: string | string[];
+    tradeOption?: string | string[];
   }>;
 }) {
   const params = await searchParams;
@@ -39,6 +42,9 @@ export default async function ListingsPage({
     subcategory: getFilterValue(params.subcategory),
     region: getFilterValue(params.region),
     condition: getFilterValue(params.condition),
+    status: getFilterValue(params.status),
+    priceMode: getFilterValue(params.priceMode),
+    tradeOption: getFilterValue(params.tradeOption),
   };
   const sort = getFilterValue(params.sort) || "newest";
 
@@ -64,6 +70,9 @@ export default async function ListingsPage({
           filters.subcategory ||
           filters.region ||
           filters.condition
+          || filters.status
+          || filters.priceMode
+          || filters.tradeOption
             ? " (필터 적용됨)"
             : ""}
         </p>
@@ -75,6 +84,8 @@ export default async function ListingsPage({
           { label: "조사료 장비", href: buildListingsQuery({ category: "조사료 장비" }) },
           { label: "신품관", href: buildListingsQuery({ category: "신품관" }) },
           { label: "삽니다", href: buildListingsQuery({ category: "삽니다" }) },
+          { label: "시운전 가능", href: buildListingsQuery({ status: "available", tradeOption: "시운전 가능" }) },
+          { label: "가격 협의", href: buildListingsQuery({ status: "available", priceMode: "negotiable" }) },
         ].map((item) => (
           <Link
             key={item.label}
@@ -95,6 +106,9 @@ export default async function ListingsPage({
             defaultRegion={filters.region || "전국"}
             defaultCondition={filters.condition}
             defaultSort={sort}
+            defaultStatus={filters.status}
+            defaultPriceMode={filters.priceMode}
+            defaultTradeOption={filters.tradeOption}
           />
         </aside>
 

@@ -3,7 +3,7 @@ import { listings } from "@/lib/data/listings";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const publicRoutes = ["", "/listings", "/sell", "/guide", "/safety"];
+  const publicRoutes = ["", "/listings", "/sell", "/guide", "/safety", "/policy"];
   const latestListingDate = listings.reduce((latest, listing) => listing.createdAt > latest ? listing.createdAt : latest, "2026-01-01");
 
   return [

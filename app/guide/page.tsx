@@ -3,19 +3,19 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "이용 안내",
-  description: "축산기계장터에서 장비를 찾고 등록하고 문의하는 방법을 확인하세요.",
+  description: "축산기계장터에서 장비를 찾고 등록하고 판매자와 직접 거래하는 방법을 확인하세요.",
 };
 
 const buyerSteps = [
   ["1", "조건으로 찾기", "장비명, 세부 품목, 지역과 신품·중고 조건으로 검색합니다."],
   ["2", "사진과 명판 확인", "대표 사진뿐 아니라 제조 명판, 작동부와 수리 부위 사진을 확인합니다."],
-  ["3", "문의하고 실물 확인", "연식, 수리 이력, 시운전과 운송 조건을 묻고 현장에서 장비를 확인합니다."],
+  ["3", "판매자에게 직접 연락", "연식, 수리 이력, 시운전과 운송 조건을 판매자에게 직접 묻고 현장에서 장비를 확인합니다."],
 ];
 
 const sellerSteps = [
   ["1", "사진 준비", "장비 전체, 제조 명판, 작동부, 사용 흔적을 밝은 곳에서 촬영합니다."],
   ["2", "정보 입력", "품목, 제조사, 모델, 연식, 수리 이력, 가격과 거래 지역을 구체적으로 적습니다."],
-  ["3", "문의와 상태 관리", "구매 문의에 답하고 예약중·판매완료 상태를 바로 변경합니다."],
+  ["3", "연락과 상태 관리", "연락 가능 시간과 방법을 안내하고 예약중·판매완료 상태를 바로 변경합니다."],
 ];
 
 export default function GuidePage() {
@@ -24,7 +24,7 @@ export default function GuidePage() {
       <div className="mx-auto max-w-5xl">
         <p className="text-sm font-semibold text-brand">HOW TO USE</p>
         <h1 className="mt-1 text-3xl font-bold text-text-primary">축산기계장터 이용 안내</h1>
-        <p className="mt-3 max-w-3xl leading-relaxed text-text-secondary">구매자는 장비 상태를 충분히 확인하고, 판매자는 실제 상태와 거래 조건을 구체적으로 공개하는 것을 기본 원칙으로 합니다.</p>
+        <p className="mt-3 max-w-3xl leading-relaxed text-text-secondary">구매자는 장비 상태를 충분히 확인하고, 판매자는 실제 상태와 거래 조건을 구체적으로 공개합니다. 장터는 거래 당사자가 직접 연결되는 공간이며 결제·배송을 대신하지 않습니다.</p>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-2">
           {[["장비를 찾는 분", buyerSteps, "/listings", "매물 찾기"], ["장비를 파는 분", sellerSteps, "/sell", "장비 등록하기"]].map(([title, steps, href, cta]) => (
@@ -43,7 +43,7 @@ export default function GuidePage() {
         <section className="mt-6 rounded-2xl border border-border bg-white p-6 sm:p-7">
           <h2 className="text-xl font-bold text-text-primary">거래 상태 표시</h2>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            {[["판매중", "바로 문의할 수 있는 매물"], ["예약중", "다른 구매자와 거래를 진행 중인 매물"], ["판매완료", "거래가 끝나 기록만 남은 매물"]].map(([status, description]) => <div key={status} className="rounded-xl bg-surface-muted p-4"><p className="font-bold text-brand">{status}</p><p className="mt-2 text-sm leading-relaxed text-text-secondary">{description}</p></div>)}
+            {[["판매중", "판매자에게 직접 연락할 수 있는 매물"], ["예약중", "다른 구매자와 거래를 진행 중인 매물"], ["판매완료", "거래가 끝나 기록만 남은 매물"]].map(([status, description]) => <div key={status} className="rounded-xl bg-surface-muted p-4"><p className="font-bold text-brand">{status}</p><p className="mt-2 text-sm leading-relaxed text-text-secondary">{description}</p></div>)}
           </div>
         </section>
 

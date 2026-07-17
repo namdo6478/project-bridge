@@ -16,7 +16,9 @@ const initialProfile: Omit<StoredSellerProfile, "savedAt"> = {
   sellerType: "개인",
   phone: "",
   region: "",
-  contactVisibility: "문의 후 공개",
+  contactVisibility: "인증회원 공개",
+  preferredContact: "전화·문자 모두",
+  contactHours: "평일 09:00~18:00",
   introduction: "",
 };
 
@@ -69,7 +71,7 @@ export function AccountForm() {
 
       <section className="rounded-xl border border-border bg-white p-5 sm:p-7">
         <h2 className="text-lg font-bold text-text-primary">판매자 정보</h2>
-        <p className="mt-2 text-sm leading-relaxed text-text-secondary">매물에 표시할 이름과 구매 문의를 받을 연락처를 입력하세요.</p>
+        <p className="mt-2 text-sm leading-relaxed text-text-secondary">매물에 표시할 이름과 구매자가 직접 연락할 방법을 입력하세요.</p>
 
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-semibold text-text-primary">
@@ -93,8 +95,8 @@ export function AccountForm() {
           <label className="block text-sm font-semibold text-text-primary">
             연락처 공개 범위
             <select value={profile.contactVisibility} onChange={(event) => updateProfile("contactVisibility", event.target.value as StoredSellerProfile["contactVisibility"])} className={inputClass}>
-              <option value="문의 후 공개">문의 후 공개</option>
-              <option value="인증회원 공개">인증회원 공개</option>
+              <option value="인증회원 공개">휴대폰 인증 회원에게 공개</option>
+              <option value="전체 공개">누구에게나 공개</option>
               <option value="비공개">비공개</option>
             </select>
           </label>
@@ -105,6 +107,21 @@ export function AccountForm() {
           <input value={profile.phone} onChange={(event) => updateProfile("phone", event.target.value)} type="tel" inputMode="tel" required pattern="[0-9-]{10,13}" className={inputClass} placeholder="010-1234-5678" />
         </label>
         <p className="mt-2 text-xs text-text-muted">실제 연결 후에는 휴대폰 인증을 완료한 번호만 사용합니다.</p>
+
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <label className="block text-sm font-semibold text-text-primary">
+            선호 연락 방법
+            <select value={profile.preferredContact} onChange={(event) => updateProfile("preferredContact", event.target.value as StoredSellerProfile["preferredContact"])} className={inputClass}>
+              <option value="전화·문자 모두">전화·문자 모두</option>
+              <option value="전화 우선">전화 우선</option>
+              <option value="문자 우선">문자 우선</option>
+            </select>
+          </label>
+          <label className="block text-sm font-semibold text-text-primary">
+            연락 가능 시간
+            <input value={profile.contactHours} onChange={(event) => updateProfile("contactHours", event.target.value)} required maxLength={40} className={inputClass} placeholder="예: 평일 09:00~18:00" />
+          </label>
+        </div>
 
         <label className="mt-5 block text-sm font-semibold text-text-primary">
           판매자 소개

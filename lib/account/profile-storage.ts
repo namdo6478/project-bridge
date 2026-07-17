@@ -5,7 +5,9 @@ export interface StoredSellerProfile {
   sellerType: "개인" | "판매점";
   phone: string;
   region: string;
-  contactVisibility: "문의 후 공개" | "인증회원 공개" | "비공개";
+  contactVisibility: "인증회원 공개" | "전체 공개" | "비공개";
+  preferredContact: "전화·문자 모두" | "전화 우선" | "문자 우선";
+  contactHours: string;
   introduction: string;
   savedAt: string;
 }
@@ -13,7 +15,19 @@ export interface StoredSellerProfile {
 export function loadStoredSellerProfile() {
   try {
     const stored = window.localStorage.getItem(SELLER_PROFILE_STORAGE_KEY);
-    return stored ? (JSON.parse(stored) as StoredSellerProfile) : null;
+    if (!stored) return null;
+    const profile = JSON.parse(stored) as Partial<StoredSellerProfile> & { contactVisibility?: string };
+    return {
+      displayName: profile.displayName ?? "",
+      sellerType: profile.sellerType === "판매점" ? "판매점" : "개인",
+      phone: profile.phone ?? "",
+      region: profile.region ?? "",
+      contactVisibility: profile.contactVisibility === "전체 공개" || profile.contactVisibility === "비공개" ? profile.contactVisibility : "인증회원 공개",
+      preferredContact: profile.preferredContact ?? "전화·문자 모두",
+      contactHours: profile.contactHours ?? "평일 09:00~18:00",
+      introduction: profile.introduction ?? "",
+      savedAt: profile.savedAt ?? new Date().toISOString(),
+    } satisfies StoredSellerProfile;
   } catch {
     window.localStorage.removeItem(SELLER_PROFILE_STORAGE_KEY);
     return null;

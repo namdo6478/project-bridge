@@ -17,6 +17,8 @@ interface PreviewData {
   region: string;
   price: string;
   contact: string;
+  preferredContact: string;
+  contactHours: string;
 }
 
 interface SelectedPhoto {
@@ -51,6 +53,7 @@ export function SellForm() {
   const [photoMessage, setPhotoMessage] = useState("");
   const [draftMessage, setDraftMessage] = useState("");
   const [draftSavedAt, setDraftSavedAt] = useState("");
+  const [completionChecks, setCompletionChecks] = useState<boolean[]>(Array(8).fill(false));
   const photosRef = useRef<SelectedPhoto[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
   const draftTimerRef = useRef<number | null>(null);
@@ -95,9 +98,13 @@ export function SellForm() {
           const sellerName = form.elements.namedItem("sellerName") as HTMLInputElement | null;
           const contact = form.elements.namedItem("contact") as HTMLInputElement | null;
           const region = form.elements.namedItem("region") as HTMLSelectElement | null;
+          const preferredContact = form.elements.namedItem("preferredContact") as HTMLSelectElement | null;
+          const contactHours = form.elements.namedItem("contactHours") as HTMLInputElement | null;
           if (sellerName && !sellerName.value) sellerName.value = profile.displayName;
           if (contact && !contact.value) contact.value = profile.phone;
           if (region && !region.value && profile.region) region.value = profile.region;
+          if (preferredContact) preferredContact.value = profile.preferredContact;
+          if (contactHours && !contactHours.value) contactHours.value = profile.contactHours;
         }
 
         if (draft) {
@@ -105,6 +112,7 @@ export function SellForm() {
         } else if (profile) {
           setDraftMessage("내 정보에 저장된 이름, 연락처와 지역을 자동으로 입력했습니다.");
         }
+        form.dispatchEvent(new Event("input", { bubbles: true }));
       }, 0);
     }, 0);
   }, []);
@@ -148,6 +156,24 @@ export function SellForm() {
     setDraftMessage("임시저장 내용을 삭제했습니다. 현재 화면의 입력값은 그대로 유지됩니다.");
   };
 
+  const refreshCompletion = (photoCount = photos.length) => {
+    const form = formRef.current;
+    if (!form) return;
+    const data = new FormData(form);
+    const text = (name: string) => String(data.get(name) ?? "").trim();
+    const checks = [
+      photoCount > 0,
+      Boolean(text("title") && text("category") && text("subcategory")),
+      Boolean(text("manufacturer") && text("model") && text("year")),
+      Boolean(text("region") && text("condition")),
+      data.has("priceNegotiable") || Number(text("price")) > 0,
+      text("description").length >= 20,
+      Boolean(text("sellerName") && text("contact")),
+      Boolean(text("preferredContact") && text("contactHours")),
+    ];
+    setCompletionChecks(checks);
+  };
+
   const completeDemoRegistration = () => {
     const form = formRef.current;
     if (!form?.reportValidity()) return;
@@ -176,21 +202,27 @@ export function SellForm() {
     }
 
     setPhotoMessage(files.length > remainingCount ? `사진은 최대 ${MAX_PHOTOS}장까지만 추가되었습니다.` : "");
-    setPhotos((current) => [
-      ...current,
-      ...selected.map((file) => ({
+    setPhotos((current) => {
+      const next = [
+        ...current,
+        ...selected.map((file) => ({
         id: `${file.name}-${file.lastModified}-${file.size}-${Math.random()}`,
         file,
         previewUrl: URL.createObjectURL(file),
       })),
-    ]);
+      ];
+      window.setTimeout(() => refreshCompletion(next.length), 0);
+      return next;
+    });
   };
 
   const removePhoto = (id: string) => {
     setPhotos((current) => {
       const target = current.find((photo) => photo.id === id);
       if (target) URL.revokeObjectURL(target.previewUrl);
-      return current.filter((photo) => photo.id !== id);
+      const next = current.filter((photo) => photo.id !== id);
+      window.setTimeout(() => refreshCompletion(next.length), 0);
+      return next;
     });
     setPhotoMessage("");
   };
@@ -230,6 +262,8 @@ export function SellForm() {
         ? "가격 협의"
         : `${Number(data.get("price") ?? 0).toLocaleString("ko-KR")}원`,
       contact: String(data.get("contact") ?? ""),
+      preferredContact: String(data.get("preferredContact") ?? ""),
+      contactHours: String(data.get("contactHours") ?? ""),
     });
 
     window.setTimeout(() => {
@@ -239,7 +273,7 @@ export function SellForm() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
-      <form ref={formRef} onSubmit={handleSubmit} onInput={() => saveDraft()} className="space-y-6">
+      <form ref={formRef} onSubmit={handleSubmit} onInput={() => { saveDraft(); refreshCompletion(); }} className="space-y-6">
         <div className="rounded-xl border border-brand/20 bg-brand/5 p-4 text-sm leading-relaxed text-brand">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -462,7 +496,7 @@ export function SellForm() {
         <section className="rounded-xl border border-border bg-white p-5 sm:p-7">
           <p className="text-xs font-bold tracking-[0.12em] text-brand">STEP 3</p>
           <h2 className="mt-1 text-xl font-bold text-text-primary">연락처 확인</h2>
-          <p className="mt-2 text-sm leading-relaxed text-text-secondary">연락처는 구매 문의를 받을 때 사용됩니다. 실제 공개 범위는 회원 기능 연결 시 선택할 수 있습니다.</p>
+          <p className="mt-2 text-sm leading-relaxed text-text-secondary">구매자가 판매자에게 직접 연락할 수 있도록 연락 방법과 가능한 시간을 안내합니다.</p>
 
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <label className={labelClass}>
@@ -472,6 +506,18 @@ export function SellForm() {
             <label className={labelClass}>
               연락처 <strong className="text-accent">*</strong>
               <input name="contact" required type="tel" autoComplete="tel" placeholder="010-0000-0000" className={inputClass} />
+            </label>
+            <label className={labelClass}>
+              선호 연락 방법
+              <select name="preferredContact" defaultValue="전화·문자 모두" className={inputClass}>
+                <option value="전화·문자 모두">전화·문자 모두</option>
+                <option value="전화 우선">전화 우선</option>
+                <option value="문자 우선">문자 우선</option>
+              </select>
+            </label>
+            <label className={labelClass}>
+              연락 가능 시간 <strong className="text-accent">*</strong>
+              <input name="contactHours" required maxLength={40} placeholder="예: 평일 09:00~18:00" className={inputClass} />
             </label>
           </div>
         </section>
@@ -499,6 +545,26 @@ export function SellForm() {
       </form>
 
       <aside className="space-y-4 lg:sticky lg:top-24">
+        <div className="rounded-xl border border-brand/20 bg-brand/5 p-5">
+          {(() => {
+            const completionCount = completionChecks.filter(Boolean).length;
+            const completionLabels = ["대표 사진", "장비 분류", "제조 정보", "지역·상태", "가격", "상세 설명", "판매자 연락처", "연락 가능 시간"];
+            return <>
+          <div className="flex items-end justify-between gap-3">
+            <div><p className="text-xs font-bold text-brand">등록 준비도</p><h2 className="mt-1 font-bold text-text-primary">{completionCount === 8 ? "등록 준비 완료" : "필수 정보를 채워주세요"}</h2></div>
+            <span className="text-lg font-bold text-brand">{Math.round((completionCount / 8) * 100)}%</span>
+          </div>
+          <div className="mt-4 h-2 overflow-hidden rounded-full bg-white" aria-label={`등록 준비도 ${completionCount}/8`}>
+            <div className="h-full rounded-full bg-brand transition-all" style={{ width: `${(completionCount / 8) * 100}%` }} />
+          </div>
+          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 text-xs text-text-secondary">
+            {completionLabels.map((item, index) => (
+              <li key={item} className={completionChecks[index] ? "font-semibold text-brand" : ""}>{completionChecks[index] ? "완료" : "확인"} · {item}</li>
+            ))}
+          </ul>
+            </>;
+          })()}
+        </div>
         <div className="rounded-xl border border-border bg-white p-5">
           <h2 className="font-bold text-text-primary">잘 팔리는 매물 작성법</h2>
           <ul className="mt-4 space-y-3 text-sm leading-relaxed text-text-secondary">
@@ -518,6 +584,8 @@ export function SellForm() {
               <div className="flex justify-between gap-3"><dt className="text-text-muted">지역</dt><dd className="font-medium">{preview.region}</dd></div>
               <div className="flex justify-between gap-3"><dt className="text-text-muted">가격</dt><dd className="font-bold text-brand">{preview.price || "미입력"}</dd></div>
               <div className="flex justify-between gap-3"><dt className="text-text-muted">연락처</dt><dd className="font-medium">{preview.contact}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-text-muted">연락 방법</dt><dd className="font-medium">{preview.preferredContact}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-text-muted">연락 시간</dt><dd className="font-medium text-right">{preview.contactHours}</dd></div>
             </dl>
             <p className="mt-4 rounded-lg bg-brand/5 p-3 text-xs leading-relaxed text-brand">입력 흐름 확인 완료. 실제 저장 구조와 로그인 기능은 구현되었고 서비스 데이터베이스 연결을 기다리고 있습니다.</p>
           </div>

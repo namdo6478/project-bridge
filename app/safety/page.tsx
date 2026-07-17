@@ -34,7 +34,7 @@ export default function SafetyPage() {
           <div className="p-6 sm:p-8"><p className="text-sm font-bold text-brand">문제가 생겼다면</p><ol className="mt-4 space-y-3 text-sm leading-relaxed text-text-secondary"><li><strong className="text-text-primary">1. 추가 송금을 중단</strong>하고 판매자와의 대화 기록을 보존합니다.</li><li><strong className="text-text-primary">2. 송금한 금융기관</strong>에 즉시 상황을 알리고 안내를 받습니다.</li><li><strong className="text-text-primary">3. 긴급하거나 범죄가 의심되면</strong> 경찰 등 관계기관에 신고합니다.</li><li><strong className="text-text-primary">4. 장터 매물 신고</strong>를 접수해 다른 이용자의 피해를 예방합니다.</li></ol></div>
         </section>
 
-        <section className="mt-8 rounded-2xl bg-brand p-6 text-white sm:p-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center"><div><h2 className="text-xl font-bold">안전한 거래는 확인에서 시작합니다</h2><p className="mt-2 text-sm leading-relaxed text-white/75">관심 있는 장비의 상태와 거래 조건을 문의 기능으로 먼저 확인하세요.</p></div><Link href="/listings" className="shrink-0 rounded-lg bg-accent px-5 py-3 text-center text-sm font-bold text-white">매물 둘러보기</Link></div></section>
+        <section className="mt-8 rounded-2xl bg-brand p-6 text-white sm:p-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center"><div><h2 className="text-xl font-bold">안전한 거래는 확인에서 시작합니다</h2><p className="mt-2 text-sm leading-relaxed text-white/75">판매자에게 직접 연락해 장비 상태와 거래 조건을 확인하고, 입금 전에는 반드시 실물을 확인하세요.</p></div><Link href="/listings" className="shrink-0 rounded-lg bg-accent px-5 py-3 text-center text-sm font-bold text-white">매물 둘러보기</Link></div></section>
       </div>
     </div>
   );

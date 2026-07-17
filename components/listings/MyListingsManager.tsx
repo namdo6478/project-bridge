@@ -1,19 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/ui/Badge";
 import { formatPrice } from "@/lib/utils/format";
 import type { Listing, SaleStatus } from "@/lib/types/listing";
 
 type ManageableStatus = Extract<SaleStatus, "판매중" | "예약중" | "판매완료">;
+const STATUS_STORAGE_KEY = "chuksan-market:my-listing-statuses:v1";
 
-export function MyListingsManager({ initialListings }: { initialListings: Listing[] }) {
-  const [items, setItems] = useState(initialListings.map((listing) => ({
+function makeItems(initialListings: Listing[]) {
+  return initialListings.map((listing) => ({
     ...listing,
     draftStatus: (listing.status === "구매요청" ? "판매중" : listing.status) as ManageableStatus,
-  })));
+  }));
+}
+
+export function MyListingsManager({ initialListings }: { initialListings: Listing[] }) {
+  const [items, setItems] = useState(makeItems(initialListings));
   const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(STATUS_STORAGE_KEY) ?? "{}") as Record<string, ManageableStatus>;
+      window.setTimeout(() => setItems((current) => current.map((item) => {
+        const status = stored[item.id];
+        return status ? { ...item, status, draftStatus: status } : item;
+      })), 0);
+    } catch {
+      window.localStorage.removeItem(STATUS_STORAGE_KEY);
+    }
+  }, []);
 
   const counts = useMemo(() => ({
     selling: items.filter((item) => item.status === "판매중").length,
@@ -26,8 +43,19 @@ export function MyListingsManager({ initialListings }: { initialListings: Listin
   };
 
   const saveStatus = (id: string) => {
-    setItems((current) => current.map((item) => item.id === id ? { ...item, status: item.draftStatus } : item));
-    setNotice("판매 상태를 변경했습니다. 공개 화면 예시이므로 새로고침하면 원래 상태로 돌아갑니다.");
+    setItems((current) => {
+      const next = current.map((item) => item.id === id ? { ...item, status: item.draftStatus } : item);
+      const statuses = Object.fromEntries(next.map((item) => [item.id, item.status]));
+      window.localStorage.setItem(STATUS_STORAGE_KEY, JSON.stringify(statuses));
+      return next;
+    });
+    setNotice("판매 상태를 변경하고 이 기기에 저장했습니다.");
+  };
+
+  const resetStatuses = () => {
+    window.localStorage.removeItem(STATUS_STORAGE_KEY);
+    setItems(makeItems(initialListings));
+    setNotice("화면 예시의 초기 판매 상태로 되돌렸습니다.");
   };
 
   return (
@@ -39,6 +67,8 @@ export function MyListingsManager({ initialListings }: { initialListings: Listin
       </div>
 
       {notice && <p role="status" className="mt-4 rounded-lg bg-brand/5 p-3 text-sm font-medium text-brand">{notice}</p>}
+
+      <div className="mt-4 flex justify-end"><button type="button" onClick={resetStatuses} className="rounded-lg border border-border bg-white px-3 py-2 text-xs font-bold text-text-secondary">예시 상태 초기화</button></div>
 
       <div className="mt-6 space-y-4">
         {items.map((listing) => (

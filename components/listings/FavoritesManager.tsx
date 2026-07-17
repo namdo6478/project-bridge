@@ -1,15 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { listings } from "@/lib/data/listings";
 import type { Listing } from "@/lib/types/listing";
 import { formatPrice } from "@/lib/utils/format";
 import { ListingCard } from "@/components/listings/ListingCard";
+import {
+  initializeFavoriteListingIds,
+  setFavoriteListingIds,
+  subscribeToListingStorage,
+} from "@/lib/listings/device-storage";
 
 const initialFavorites = listings.slice(0, 3);
 
 export function FavoritesManager() {
-  const [items, setItems] = useState<Listing[]>(initialFavorites);
+  const [items, setItems] = useState<Listing[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [notice, setNotice] = useState("");
 
@@ -17,6 +22,17 @@ export function FavoritesManager() {
     () => selectedIds.map((id) => items.find((item) => item.id === id)).filter((item): item is Listing => Boolean(item)),
     [items, selectedIds],
   );
+
+  useEffect(() => {
+    const sync = () => {
+      const ids = initializeFavoriteListingIds(initialFavorites.map((item) => item.id));
+      window.setTimeout(() => {
+        setItems(ids.map((id) => listings.find((item) => item.id === id)).filter((item): item is Listing => Boolean(item)));
+      }, 0);
+    };
+    sync();
+    return subscribeToListingStorage(sync);
+  }, []);
 
   const toggleCompare = (id: string) => {
     setNotice("");
@@ -31,13 +47,16 @@ export function FavoritesManager() {
   };
 
   const removeFavorite = (id: string) => {
-    setItems((current) => current.filter((item) => item.id !== id));
+    const nextItems = items.filter((item) => item.id !== id);
+    setItems(nextItems);
+    setFavoriteListingIds(nextItems.map((item) => item.id));
     setSelectedIds((current) => current.filter((item) => item !== id));
-    setNotice("관심 매물에서 제외했습니다. 공개 예시는 새로고침하면 초기화됩니다.");
+    setNotice("관심 매물에서 제외했습니다. 이 기기에 변경 내용이 저장됐습니다.");
   };
 
   const resetFavorites = () => {
     setItems(initialFavorites);
+    setFavoriteListingIds(initialFavorites.map((item) => item.id));
     setSelectedIds([]);
     setNotice("예시 관심 매물을 다시 불러왔습니다.");
   };
@@ -47,7 +66,7 @@ export function FavoritesManager() {
       <div className="mt-6 flex flex-col gap-3 rounded-xl border border-brand/20 bg-brand/5 p-4 text-sm leading-relaxed text-brand sm:flex-row sm:items-center sm:justify-between">
         <div>
           <strong>관심 매물 비교 예시</strong>
-          <p className="mt-1 text-text-secondary">2~3대를 선택하면 가격, 지역, 연식과 상태를 한눈에 비교할 수 있습니다.</p>
+          <p className="mt-1 text-text-secondary">저장한 매물은 이 기기에 유지됩니다. 2~3대를 선택하면 가격, 지역, 연식과 상태를 한눈에 비교할 수 있습니다.</p>
         </div>
         <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-brand">{items.length}대 저장</span>
       </div>

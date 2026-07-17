@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatKoreanPhone, isSupportedPhone, normalizeKoreanPhone } from "@/lib/auth/phone";
+import { saveDemoPhoneSession } from "@/lib/auth/demo-session";
 
 type AuthMode = "login" | "signup";
 type AuthStep = "phone" | "otp" | "success";
@@ -12,9 +13,10 @@ const inputClass = "mt-2 w-full rounded-lg border border-border bg-white px-4 py
 
 interface LoginFormProps {
   configured: boolean;
+  nextPath?: string;
 }
 
-export function LoginForm({ configured }: LoginFormProps) {
+export function LoginForm({ configured, nextPath = "/account" }: LoginFormProps) {
   const [mode, setMode] = useState<AuthMode>("login");
   const [step, setStep] = useState<AuthStep>("phone");
   const [displayName, setDisplayName] = useState("");
@@ -111,6 +113,7 @@ export function LoginForm({ configured }: LoginFormProps) {
         setError("공개 데모 인증번호는 123456입니다.");
         return;
       }
+      saveDemoPhoneSession(sentPhone);
       setStep("success");
       return;
     }
@@ -140,7 +143,7 @@ export function LoginForm({ configured }: LoginFormProps) {
         </p>
         <div className="mt-5 grid gap-2 sm:grid-cols-2">
           <button type="button" onClick={() => changeMode(mode)} className="rounded-lg border border-border bg-white px-4 py-3 text-sm font-bold text-text-secondary">다시 확인</button>
-          <Link href="/account" className="rounded-lg bg-brand px-4 py-3 text-center text-sm font-bold text-white">내 정보로 이동</Link>
+          <Link href={nextPath} className="rounded-lg bg-brand px-4 py-3 text-center text-sm font-bold text-white">{nextPath.startsWith("/listings/") ? "판매자 연락처 확인" : "내 정보로 이동"}</Link>
         </div>
       </div>
     );
@@ -165,7 +168,7 @@ export function LoginForm({ configured }: LoginFormProps) {
             휴대폰 번호
             <input value={phoneInput} onChange={(event) => { setPhoneInput(formatKoreanPhone(event.target.value)); resetFeedback(); }} name="phone" required type="tel" inputMode="tel" autoComplete="tel" className={inputClass} placeholder="010-1234-5678" />
           </label>
-          <p className="text-xs leading-relaxed text-text-muted">비밀번호 없이 문자 인증번호로 로그인합니다. 인증된 번호는 매물 등록과 안전한 문의에 사용됩니다.</p>
+          <p className="text-xs leading-relaxed text-text-muted">비밀번호 없이 문자 인증번호로 로그인합니다. 인증 정보는 매물 등록과 판매자 연락처 확인에 사용됩니다.</p>
           {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</p>}
           <button type="submit" disabled={loading} className="w-full rounded-lg bg-brand px-4 py-3 font-bold text-white transition hover:bg-brand-light disabled:cursor-wait disabled:opacity-60">
             {loading ? "인증번호 전송 중..." : "문자로 인증번호 받기"}

@@ -9,7 +9,7 @@ const navLinks = [
   { href: "/listings", label: "매물 목록" },
   { href: "/favorites", label: "관심 매물" },
   { href: "/my-listings", label: "내 매물" },
-  { href: "/inquiries", label: "문의 내역" },
+  { href: "/guide", label: "이용 안내" },
 ];
 
 function BrandMark() {
@@ -40,7 +40,7 @@ export function Header() {
             <BrandMark />
             <div className="flex flex-col">
               <span className="text-base font-bold leading-tight tracking-tight text-brand sm:text-lg">축산기계장터</span>
-              <span className="hidden text-[11px] text-text-secondary sm:block">전국 축산기계 중고·신품 거래</span>
+              <span className="hidden text-[11px] text-text-secondary sm:block">판매자와 구매자가 직접 잇는 장터</span>
             </div>
           </Link>
 
