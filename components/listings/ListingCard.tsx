@@ -4,6 +4,7 @@ import { formatPrice } from "@/lib/utils/format";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { CategoryBadge, StatusBadge } from "@/components/ui/Badge";
 import { getListingFreshness } from "@/lib/listings/freshness";
+import { getSellerById } from "@/lib/data/sellers";
 
 interface ListingCardProps {
   listing: Listing;
@@ -12,6 +13,7 @@ interface ListingCardProps {
 
 export function ListingCard({ listing, priority = false }: ListingCardProps) {
   const freshness = getListingFreshness(listing.confirmedAt);
+  const seller = getSellerById(listing.sellerId);
 
   return (
     <Link
@@ -39,6 +41,7 @@ export function ListingCard({ listing, priority = false }: ListingCardProps) {
         <h3 className="line-clamp-2 text-base font-semibold leading-snug text-text-primary group-hover:text-brand">
           {listing.title}
         </h3>
+        {seller && <p className="text-xs text-text-muted">{seller.displayName}{seller.identityVerified ? " · 본인인증" : ""}</p>}
         <dl className="mt-auto grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
           <div>
             <dt className="text-text-muted">지역</dt>

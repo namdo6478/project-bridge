@@ -2,7 +2,7 @@ export const SELLER_PROFILE_STORAGE_KEY = "chuksan-market:seller-profile:v1";
 
 export interface StoredSellerProfile {
   displayName: string;
-  sellerType: "개인" | "판매점";
+  sellerType: "개인" | "영농법인" | "업체";
   phone: string;
   region: string;
   contactVisibility: "인증회원 공개" | "전체 공개" | "비공개";
@@ -17,9 +17,10 @@ export function loadStoredSellerProfile() {
     const stored = window.localStorage.getItem(SELLER_PROFILE_STORAGE_KEY);
     if (!stored) return null;
     const profile = JSON.parse(stored) as Partial<StoredSellerProfile> & { contactVisibility?: string };
+    const storedSellerType = String(profile.sellerType ?? "");
     return {
       displayName: profile.displayName ?? "",
-      sellerType: profile.sellerType === "판매점" ? "판매점" : "개인",
+      sellerType: storedSellerType === "판매점" || storedSellerType === "업체" ? "업체" : storedSellerType === "영농법인" ? "영농법인" : "개인",
       phone: profile.phone ?? "",
       region: profile.region ?? "",
       contactVisibility: profile.contactVisibility === "전체 공개" || profile.contactVisibility === "비공개" ? profile.contactVisibility : "인증회원 공개",

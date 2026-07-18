@@ -104,8 +104,24 @@ export type SaleStatus = "판매중" | "예약중" | "판매완료" | "구매요
 
 export type ListingCondition = "신품" | "중고";
 
+export type MemberType = "개인" | "영농법인" | "업체" | "관리자";
+
+export interface SellerProfile {
+  id: string;
+  displayName: string;
+  memberType: MemberType;
+  region: ListingRegion;
+  joinedAt: string;
+  identityVerified: boolean;
+  businessVerified: boolean;
+  completedSales: number;
+  lastActiveAt: string;
+  introduction: string;
+}
+
 export interface Listing {
   id: string;
+  sellerId: string;
   title: string;
   category: ListingCategory;
   subcategory: ListingSubcategory;

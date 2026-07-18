@@ -9,7 +9,6 @@ interface ManagedPhoto {
   file?: File;
 }
 
-const MAX_PHOTOS = 8;
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
@@ -38,13 +37,7 @@ export function PhotoManager() {
 
   const addPhotos = (files: FileList | null) => {
     if (!files) return;
-    const remaining = MAX_PHOTOS - photos.length;
-    const selected = Array.from(files).slice(0, Math.max(remaining, 0));
-
-    if (remaining <= 0) {
-      setMessage(`사진은 최대 ${MAX_PHOTOS}장까지 등록할 수 있습니다.`);
-      return;
-    }
+    const selected = Array.from(files);
     if (selected.some((file) => !ALLOWED_TYPES.includes(file.type))) {
       setMessage("JPG, PNG, WEBP 사진만 추가할 수 있습니다.");
       return;
@@ -65,7 +58,7 @@ export function PhotoManager() {
       };
     });
     setPhotos((current) => [...current, ...additions]);
-    setMessage(files.length > remaining ? `최대 ${MAX_PHOTOS}장까지만 추가했습니다.` : `${additions.length}장을 추가했습니다.`);
+    setMessage(`${additions.length}장을 추가했습니다.`);
   };
 
   const removePhoto = (index: number) => {
@@ -143,7 +136,7 @@ export function PhotoManager() {
       )}
 
       <div className="mt-4 flex flex-col gap-2 rounded-lg bg-brand/5 p-3 text-xs leading-relaxed text-text-secondary sm:flex-row sm:items-center sm:justify-between">
-        <span>JPG·PNG·WEBP, 장당 10MB 이하, 최대 {MAX_PHOTOS}장</span>
+        <span>JPG·PNG·WEBP, 장당 10MB 이하 · 사진 장수 제한 없음</span>
         <strong className="text-brand">현재 {photos.length}장</strong>
       </div>
       {message && <p role="status" className="mt-3 text-sm font-medium text-brand">{message}</p>}

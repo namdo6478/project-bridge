@@ -8,8 +8,9 @@ const navLinks = [
   { href: "/", label: "홈" },
   { href: "/listings", label: "매물 목록" },
   { href: "/favorites", label: "관심 매물" },
-  { href: "/my-listings", label: "내 매물" },
+  { href: "/my-listings", label: "내 등록" },
   { href: "/guide", label: "이용 안내" },
+  { href: "/wanted", label: "삽니다" },
 ];
 
 function BrandMark() {
@@ -110,8 +111,9 @@ export function Header() {
         )}
       </header>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-border bg-white p-2 shadow-[0_-6px_20px_rgba(17,24,39,0.08)] lg:hidden" aria-label="빠른 메뉴">
+      <nav className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-3 gap-2 border-t border-border bg-white p-2 shadow-[0_-6px_20px_rgba(17,24,39,0.08)] lg:hidden" aria-label="빠른 메뉴">
         <Link href="/listings" className="rounded-lg border border-brand/20 px-3 py-3 text-center text-sm font-bold text-brand">매물 찾기</Link>
+        <Link href="/wanted" className="rounded-lg border border-brand/20 bg-brand/5 px-3 py-3 text-center text-sm font-bold text-brand">삽니다</Link>
         <Link href="/sell" className="rounded-lg bg-accent px-3 py-3 text-center text-sm font-bold text-white">장비 팔기</Link>
       </nav>
     </>

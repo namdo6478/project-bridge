@@ -11,6 +11,7 @@ import { ListingGrid } from "@/components/listings/ListingGrid";
 export default function HomePage() {
   const openListings = listings.filter((item) => item.status !== "판매완료");
   const featuredListings = openListings.slice(0, 6);
+  const wantedListings = listings.filter((item) => item.status === "구매요청").slice(0, 3);
 
   return (
     <>
@@ -42,6 +43,12 @@ export default function HomePage() {
                 className="inline-flex min-h-12 items-center justify-center rounded-lg bg-accent px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-accent-hover"
               >
                 장비 팔기
+              </Link>
+              <Link
+                href="/wanted#register"
+                className="inline-flex min-h-12 items-center justify-center rounded-lg border border-brand/25 bg-white px-6 py-3 text-sm font-bold text-brand transition hover:bg-brand/5"
+              >
+                찾는 장비 등록
               </Link>
             </div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text-secondary">
@@ -187,7 +194,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-sm font-semibold text-brand">WANTED</p>
+            <h2 className="mt-1 text-2xl font-bold text-text-primary">지금 찾고 있는 장비</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text-secondary">보유한 장비가 구매자의 조건에 맞으면 요청 상세에서 휴대폰 인증 후 직접 연락할 수 있습니다.</p>
+          </div>
+          <Link href="/wanted" className="shrink-0 text-sm font-semibold text-brand hover:underline">구매 요청 전체 보기</Link>
+        </div>
+        <div className="mt-7"><ListingGrid listings={wantedListings} /></div>
+        <div className="mt-6 rounded-xl border border-brand/20 bg-brand/5 p-5 sm:flex sm:items-center sm:justify-between sm:gap-6">
+          <div><h3 className="font-bold text-text-primary">원하는 장비가 매물에 없나요?</h3><p className="mt-1 text-sm leading-relaxed text-text-secondary">필요한 규격과 지역·예산을 등록하면 장비를 보유한 판매자가 직접 판단할 수 있습니다.</p></div>
+          <Link href="/wanted#register" className="mt-4 inline-flex shrink-0 rounded-lg bg-brand px-5 py-3 text-sm font-bold text-white sm:mt-0">구매 요청 등록</Link>
+        </div>
+      </section>
+
+      <section className="border-t border-border bg-surface-muted px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
         <div className="grid overflow-hidden rounded-2xl bg-brand text-white lg:grid-cols-[1fr_420px]">
           <div className="p-7 sm:p-10">
             <p className="text-sm font-semibold text-white/70">SELL YOUR EQUIPMENT</p>
@@ -214,6 +238,7 @@ export default function HomePage() {
               </li>
             ))}
           </ol>
+        </div>
         </div>
       </section>
     </>

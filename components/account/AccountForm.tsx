@@ -82,7 +82,8 @@ export function AccountForm() {
             판매자 유형
             <select value={profile.sellerType} onChange={(event) => updateProfile("sellerType", event.target.value as StoredSellerProfile["sellerType"])} className={inputClass}>
               <option value="개인">개인</option>
-              <option value="판매점">판매점</option>
+              <option value="영농법인">영농법인</option>
+              <option value="업체">업체·판매점</option>
             </select>
           </label>
           <label className="block text-sm font-semibold text-text-primary">

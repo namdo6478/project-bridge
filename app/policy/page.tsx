@@ -30,14 +30,6 @@ export default function PolicyPage() {
           ))}
         </section>
 
-        <section className="mt-6 rounded-2xl border border-border bg-white p-6 sm:p-8">
-          <h2 className="text-xl font-bold text-text-primary">초기 운영 범위</h2>
-          <div className="mt-5 grid gap-5 sm:grid-cols-2">
-            <div><h3 className="font-bold text-brand">장터가 제공하는 것</h3><ul className="mt-3 space-y-2 text-sm leading-relaxed text-text-secondary"><li>매물 등록·검색·비교와 판매 상태 표시</li><li>휴대폰 인증 기반 연락처 확인</li><li>안전거래 체크와 허위·위험 매물 신고</li><li>신고 매물 검토 후 숨김·삭제</li></ul></div>
-            <div><h3 className="font-bold text-text-primary">장터가 대신하지 않는 것</h3><ul className="mt-3 space-y-2 text-sm leading-relaxed text-text-secondary"><li>가격 흥정과 거래 상담</li><li>계약금·잔금 수납과 결제 보증</li><li>장비 성능·하자 보증과 감정</li><li>운송·설치 계약과 분쟁 중재</li></ul></div>
-          </div>
-        </section>
-
         <section className="mt-6 rounded-2xl border border-brand/20 bg-white p-6 sm:p-8">
           <h2 className="text-xl font-bold text-text-primary">판매자가 직접 최신 상태를 관리합니다</h2>
           <ol className="mt-4 grid gap-3 text-sm leading-relaxed text-text-secondary sm:grid-cols-3">
@@ -46,6 +38,14 @@ export default function PolicyPage() {
             <li className="rounded-xl bg-red-50 p-4"><strong className="block text-red-800">60일 동안 미확인</strong><span className="mt-1 block">삭제하지 않고 검색에서만 잠시 숨깁니다. 판매자가 확인하면 다시 노출됩니다.</span></li>
           </ol>
           <p className="mt-4 text-xs leading-relaxed text-text-muted">판매완료 매물은 거래 기록과 시세 참고를 위해 보관합니다. 실제 판매가격 입력은 판매자가 선택할 수 있습니다.</p>
+        </section>
+
+        <section className="mt-6 rounded-2xl border border-border bg-white p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-text-primary">초기 운영 범위</h2>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            <div><h3 className="font-bold text-brand">장터가 제공하는 것</h3><ul className="mt-3 space-y-2 text-sm leading-relaxed text-text-secondary"><li>매물 등록·검색·비교와 판매 상태 표시</li><li>휴대폰 인증 기반 연락처 확인</li><li>안전거래 체크와 허위·위험 매물 신고</li><li>신고 매물 검토 후 숨김·삭제</li></ul></div>
+            <div><h3 className="font-bold text-text-primary">장터가 대신하지 않는 것</h3><ul className="mt-3 space-y-2 text-sm leading-relaxed text-text-secondary"><li>가격 흥정과 거래 상담</li><li>계약금·잔금 수납과 결제 보증</li><li>장비 성능·하자 보증과 감정</li><li>운송·설치 계약과 분쟁 중재</li></ul></div>
+          </div>
         </section>
 
         <section className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-6 sm:p-8">

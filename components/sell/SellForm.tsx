@@ -34,7 +34,6 @@ interface SellDraft {
   savedAt: string;
 }
 
-const MAX_PHOTOS = 8;
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const DRAFT_STORAGE_KEY = "chuksan-market:sell-draft:v1";
@@ -185,13 +184,7 @@ export function SellForm() {
   const handlePhotoChange = (files: FileList | null) => {
     if (!files) return;
 
-    const remainingCount = MAX_PHOTOS - photos.length;
-    if (remainingCount <= 0) {
-      setPhotoMessage(`사진은 최대 ${MAX_PHOTOS}장까지 등록할 수 있습니다.`);
-      return;
-    }
-
-    const selected = Array.from(files).slice(0, remainingCount);
+    const selected = Array.from(files);
     if (selected.some((file) => !ALLOWED_PHOTO_TYPES.includes(file.type))) {
       setPhotoMessage("JPG, PNG, WEBP 사진만 선택할 수 있습니다.");
       return;
@@ -201,7 +194,7 @@ export function SellForm() {
       return;
     }
 
-    setPhotoMessage(files.length > remainingCount ? `사진은 최대 ${MAX_PHOTOS}장까지만 추가되었습니다.` : "");
+    setPhotoMessage("");
     setPhotos((current) => {
       const next = [
         ...current,
@@ -312,7 +305,7 @@ export function SellForm() {
               className="sr-only"
               onChange={(event) => handlePhotoChange(event.target.files)}
             />
-            <p className="mt-2 text-xs text-text-muted">JPG·PNG·WEBP, 장당 10MB 이하, 최대 {MAX_PHOTOS}장</p>
+            <p className="mt-2 text-xs text-text-muted">JPG·PNG·WEBP, 장당 10MB 이하 · 사진 장수 제한 없음</p>
             <div className="mt-3 rounded-lg border border-brand/15 bg-brand/5 p-3 text-sm leading-relaxed text-brand">
               <strong>첫 번째 사진이 대표 사진으로 표시됩니다.</strong>
               <p className="mt-1 text-xs text-text-secondary">장비 전체가 잘 보이는 정면 또는 측면 사진을 첫 번째로 선택하세요. 명판, 사용 흔적, 수리 부위 사진은 그다음에 올리면 좋습니다.</p>
@@ -354,7 +347,7 @@ export function SellForm() {
                 ))}
               </div>
             )}
-            {photos.length > 0 && <p className="mt-3 text-xs font-medium text-text-secondary">{photos.length}/{MAX_PHOTOS}장 선택 · 순서를 바꾸면 상세 화면의 사진 순서도 함께 바뀝니다.</p>}
+            {photos.length > 0 && <p className="mt-3 text-xs font-medium text-text-secondary">{photos.length}장 선택 · 순서를 바꾸면 상세 화면의 사진 순서도 함께 바뀝니다.</p>}
             {photoMessage && <p className="mt-3 text-sm text-red-700">{photoMessage}</p>}
           </div>
 

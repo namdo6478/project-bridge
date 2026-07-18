@@ -11,6 +11,10 @@ import { DirectContactCard } from "@/components/listings/DirectContactCard";
 import { ShareListingButton } from "@/components/listings/ShareListingButton";
 import { TradeChecklist } from "@/components/listings/TradeChecklist";
 import { getListingFreshness } from "@/lib/listings/freshness";
+import { getSellerById } from "@/lib/data/sellers";
+import { SellerProfileCard } from "@/components/listings/SellerProfileCard";
+import { ListingGrid } from "@/components/listings/ListingGrid";
+import { buildListingsQuery } from "@/lib/utils/filter-listings";
 
 interface ListingDetailPageProps {
   params: Promise<{ id: string }>;
@@ -49,12 +53,15 @@ export default async function ListingDetailPage({
   }
 
   const freshness = getListingFreshness(listing.confirmedAt);
+  const seller = getSellerById(listing.sellerId);
+  const isWanted = listing.status === "구매요청";
+  const relatedListings = listings.filter((item) => item.id !== listing.id && item.category === listing.category && item.status !== "판매완료").slice(0, 3);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <ListingActivityTracker listingId={listing.id} />
       <Link
-        href="/listings"
+        href={isWanted ? "/wanted" : "/listings"}
         className="inline-flex items-center gap-1 text-sm font-medium text-text-secondary hover:text-brand"
       >
         <svg
@@ -71,7 +78,7 @@ export default async function ListingDetailPage({
             d="M15.75 19.5L8.25 12l7.5-7.5"
           />
         </svg>
-        매물 목록으로
+        {isWanted ? "구매 요청 목록으로" : "매물 목록으로"}
       </Link>
 
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -140,10 +147,12 @@ export default async function ListingDetailPage({
             </div>
           </dl>
 
+          {seller && <SellerProfileCard seller={seller} role={isWanted ? "buyer" : "seller"} />}
+
           <DirectContactCard
             listingId={listing.id}
             region={listing.region}
-            sellerLabel={listing.condition === "신품" ? "장비 판매점" : "개인 판매자"}
+            sellerLabel={isWanted ? "장비 구매 희망자" : listing.condition === "신품" ? "장비 판매점" : "개인 판매자"}
             status={listing.status}
           />
         </div>
@@ -160,6 +169,10 @@ export default async function ListingDetailPage({
       </section>
 
       <TradeChecklist listingId={listing.id} />
+
+      {relatedListings.length > 0 && (
+        <section className="mt-10"><div className="mb-5 flex items-end justify-between gap-4"><div><p className="text-xs font-bold text-brand">SIMILAR LISTINGS</p><h2 className="mt-1 text-2xl font-bold text-text-primary">같은 종류의 다른 매물</h2></div><Link href={buildListingsQuery({ category: listing.category })} className="shrink-0 text-sm font-bold text-brand hover:underline">더 보기</Link></div><ListingGrid listings={relatedListings} /></section>
+      )}
 
       <section className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-6 sm:p-8">
         <h2 className="font-bold text-amber-950">거래 전 꼭 확인하세요</h2>
