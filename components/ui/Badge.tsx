@@ -4,6 +4,7 @@ const statusStyles: Record<SaleStatus, string> = {
   판매중: "bg-brand/10 text-brand border-brand/20",
   예약중: "bg-amber-50 text-amber-700 border-amber-200",
   판매완료: "bg-gray-100 text-gray-500 border-gray-200",
+  구매요청: "bg-blue-50 text-blue-700 border-blue-200",
 };
 
 interface StatusBadgeProps {
